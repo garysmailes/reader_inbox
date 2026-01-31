@@ -7,15 +7,10 @@
       <div class="inbox__alert"><%= flash[:alert] %></div>
     <% end %>
 
-    <% if flash[:notice].present? %>
-      <div class="inbox__notice">
-        <%= flash[:notice] %>
+  <% if flash[:notice].present? %>
+    <div class="inbox__notice"><%= flash[:notice] %></div>
+  <% end %>
 
-        <% if flash[:notice] == "Already saved." && params[:saved_item_id].present? %>
-          <%= link_to "View", saved_item_path(params[:saved_item_id]) %>
-        <% end %>
-      </div>
-    <% end %>
 
     <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
       <%= form.url_field :url,
