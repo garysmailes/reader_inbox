@@ -28,11 +28,12 @@
           <li class="inbox__item">
             <p class="inbox__item_title">
               <a class="inbox__item_link"
-                 href="<%= item.url %>"
-                 target="_blank"
-                 rel="noopener noreferrer">
+                href="<%= open_saved_item_path(item) %>"
+                target="_blank"
+                rel="noopener noreferrer">
                 <%= item.fetched_title.presence || clean_url_for(item) %>
               </a>
+
             </p>
 
             <div class="inbox__item_meta">

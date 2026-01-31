@@ -1,10 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: [:update, :destroy]
-
-  def index
-    @saved_items = Current.user.saved_items.order(created_at: :desc)
-  end
+  before_action :set_saved_item, only: [:open, :destroy]
 
   def create
     url = params.dig(:saved_item, :url).to_s.strip
@@ -40,8 +36,7 @@ class SavedItemsController < ApplicationController
 
       redirect_to inbox_path, notice: "Saved."
     else
-      redirect_to inbox_path,
-                  alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
+      redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
     end
   rescue ActiveRecord::RecordNotUnique
     # Race-safe dedupe: DB unique index (user_id, url) is the source of truth.
@@ -52,12 +47,21 @@ class SavedItemsController < ApplicationController
     redirect_to inbox_path, notice: "Already saved."
   end
 
-  def update
-    if @saved_item.update(saved_item_params)
-      redirect_to inbox_path, notice: "Updated."
-    else
-      render :edit, status: :unprocessable_entity
+  # "First open" automation:
+  # - If Unread, transition to Viewed and record last_viewed_at.
+  # - Never auto-mark Read.
+  # - No behavior/engagement inference.
+  def open
+    if @saved_item.unread?
+      @saved_item.update!(
+        state: "viewed",
+        last_viewed_at: Time.current
+      )
     end
+
+    redirect_to @saved_item.url, allow_other_host: true
+  rescue ActionController::Redirecting::UnsafeRedirectError, URI::InvalidURIError
+    redirect_to inbox_path, alert: "Could not open that URL."
   end
 
   def destroy

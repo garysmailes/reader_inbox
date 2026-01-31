@@ -64,6 +64,19 @@ It does **not** imply:
 - Manual transition to **Read**
 - Manual transition to **Archived**
 
+
+---
+
+## last_viewed_at
+
+`last_viewed_at` is a best-effort timestamp recorded **only** when an Unread item is opened for the first time and transitions to **Viewed**.
+
+Rules:
+- Set `last_viewed_at` when the automatic transition **Unread → Viewed** occurs.
+- Do not update `last_viewed_at` on subsequent opens automatically.
+- Do not use `last_viewed_at` to infer engagement, reading completion, or to drive any automatic transition (especially never to Read).
+
+
 ---
 
 ### Read
@@ -147,6 +160,8 @@ It must not be:
 Viewed exists to:
 - acknowledge user interaction
 - without implying judgement or completion
+
+
 
 ---
 
