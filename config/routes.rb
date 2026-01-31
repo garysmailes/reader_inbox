@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   # Inbox (authenticated surface)
   get "/inbox", to: "inbox#show", as: :inbox
+  get "/archive", to: "archive#show", as: :archive
+
   root to: redirect("/inbox")
 
   # Rails 8 built-in authentication (generated)

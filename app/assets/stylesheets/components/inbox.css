@@ -241,3 +241,34 @@
   outline: none;
   box-shadow: 0 0 0 var(--border-size-2) var(--indigo-2);
 }
+
+.inbox__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--size-3);
+}
+
+.inbox__nav_link {
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-0);
+  color: var(--gray-7);
+  text-decoration: none;
+}
+
+.inbox__nav_link:hover {
+  color: var(--gray-9);
+  text-decoration: underline;
+}
+
+.inbox__item_actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-2);
+}
+
+/* Slightly quieter button for secondary actions like Archive */
+.inbox__item_action--subtle {
+  border-color: var(--gray-3);
+  color: var(--gray-7);
+}

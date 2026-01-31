@@ -110,6 +110,9 @@ Archived is a **location state**, not a reading judgement.
 - Manual unarchive back to Inbox
 - Manual deletion
 
+Archived items are excluded from the canonical Inbox view and are accessible via the Archive view (`/archive`), where they can be unarchived (set back to a non-archived state).
+
+
 ---
 
 ## Allowed transitions

@@ -1,7 +1,12 @@
 <div class="inbox">
   <div class="inbox__card">
-    <h1 class="inbox__title">Reading Inbox</h1>
-    <p class="inbox__hint">Paste a link now. Read it later.</p>
+    <div class="inbox__header">
+      <h1 class="inbox__title">Reading Inbox</h1>
+      <a class="inbox__nav_link" href="<%= archive_path %>">Archive</a>
+    </div>
+
+<p class="inbox__hint">Paste a link now. Read it later.</p>
+
 
     <% if flash[:alert].present? %>
       <div class="inbox__alert"><%= flash[:alert] %></div>
@@ -46,7 +51,8 @@
             <% if metadata_unavailable?(item) %>
               <span class="inbox__item_note">Metadata was not available</span>
             <% end %>
-
+            
+          <div class="inbox__item_actions">
             <% unless item.read? %>
               <%= button_to "Mark read",
                 state_saved_item_path(item),
@@ -55,6 +61,15 @@
                 class: "inbox__item_action",
                 form_class: "inbox__item_action_form" %>
             <% end %>
+
+            <%= button_to "Archive",
+              state_saved_item_path(item),
+              method: :patch,
+              params: { saved_item: { state: "archived" } },
+              class: "inbox__item_action inbox__item_action--subtle",
+              form_class: "inbox__item_action_form" %>
+          </div>
+
           </div>
 
 

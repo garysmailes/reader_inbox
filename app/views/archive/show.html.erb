@@ -1,0 +1,54 @@
+<div class="inbox">
+  <div class="inbox__card">
+    <div class="inbox__header">
+      <h1 class="inbox__title">Archive</h1>
+      <a class="inbox__nav_link" href="<%= inbox_path %>">Inbox</a>
+    </div>
+
+    <p class="inbox__hint">Archived items are kept but removed from your active inbox.</p>
+
+    <% if flash[:alert].present? %>
+      <div class="inbox__alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <% if flash[:notice].present? %>
+      <div class="inbox__notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    <% if @saved_items.present? %>
+      <ul class="inbox__list" aria-label="Archived items">
+        <% @saved_items.each do |item| %>
+          <li class="inbox__item">
+            <p class="inbox__item_title">
+              <a class="inbox__item_link"
+                 href="<%= open_saved_item_path(item) %>"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                <%= item.fetched_title.presence || clean_url_for(item) %>
+              </a>
+            </p>
+
+            <div class="inbox__item_meta">
+              <% if item.domain.present? %>
+                <span class="inbox__item_domain"><%= item.domain %></span>
+              <% elsif item.fetched_title.present? %>
+                <span class="inbox__item_domain"><%= clean_url_for(item) %></span>
+              <% end %>
+
+              <div class="inbox__item_actions">
+                <%= button_to "Unarchive",
+                  state_saved_item_path(item),
+                  method: :patch,
+                  params: { saved_item: { state: "unread" } },
+                  class: "inbox__item_action",
+                  form_class: "inbox__item_action_form" %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="inbox__empty">No archived items.</p>
+    <% end %>
+  </div>
+</div>
