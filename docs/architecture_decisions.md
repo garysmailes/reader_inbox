@@ -233,3 +233,50 @@ this document must be updated first.
 The architecture exists to serve the product.  
 The product exists to serve the user.
 
+## Testing Policy (Canonical)
+
+This application does **not** use automated tests.
+
+This is an intentional, global design decision.
+
+The project does not include:
+- unit tests
+- integration tests
+- request/feature tests
+- system or end-to-end tests
+
+Automated testing should **not** be added implicitly or incrementally as part of feature work.
+
+### Rationale
+
+Correctness and safety are enforced through:
+
+- **Structural guarantees**
+  - Database-level constraints (foreign keys, NOT NULL constraints, unique indexes)
+  - Explicit ownership relationships (e.g. per-user data ownership)
+- **Architectural constraints**
+  - Global authentication enforcement
+  - Canonical access patterns (e.g. user-scoped queries only)
+- **Framework guarantees**
+  - Rails 8 built-in authentication for identity and session handling
+- **Manual verification**
+  - Direct interaction during development
+  - Code review against documented rules and patterns
+
+This approach prioritises:
+- clarity over ceremony
+- structural correctness over behavioural assertions
+- fast iteration without maintaining a parallel test surface
+
+### Implications
+
+- The absence of tests is **not a defect**.
+- Feature completion does **not** require automated test coverage.
+- Acceptance criteria must be satisfied through architecture, constraints, and documented patterns rather than test assertions.
+
+Any proposal to introduce automated tests must be:
+- explicit,
+- documented, and
+- justified at the architectural level.
+
+
