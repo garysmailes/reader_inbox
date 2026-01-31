@@ -8,7 +8,7 @@ module SavedItemsHelper
   end
 
   def metadata_unavailable?(saved_item)
-    saved_item.fetched_title.blank? && saved_item.domain.blank?
+    saved_item.fetched_title.blank?
   end
 
 end
