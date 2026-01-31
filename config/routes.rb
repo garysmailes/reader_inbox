@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   # Sign-up (we add this)
   get  "/sign-up", to: "registrations#new",    as: :sign_up
   post "/sign-up", to: "registrations#create"
+
+  # Saved Items (URL capture)
+  resources :saved_items, only: %i[create]
 end

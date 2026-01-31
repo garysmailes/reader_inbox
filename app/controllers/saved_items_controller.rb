@@ -12,14 +12,30 @@ class SavedItemsController < ApplicationController
   end
 
   def create
-    @saved_item = Current.user.saved_items.new(saved_item_params)
+    url = params.dig(:saved_item, :url).to_s.strip
 
-  if @saved_item.save
-    FetchSavedItemMetadataJob.perform_later(@saved_item.id)
-    redirect_to inbox_path, notice: "Saved."
-    else
-      render :new, status: :unprocessable_entity
+    if url.blank?
+      redirect_to inbox_path, alert: "URL is required."
+      return
     end
+
+    # Best-effort dedupe (exact string match; no aggressive normalisation)
+    if (existing = Current.user.saved_items.find_by(url: url))
+      redirect_to inbox_path, notice: "Already saved."
+      return
+    end
+
+    @saved_item = Current.user.saved_items.new(url: url)
+
+    if @saved_item.save
+      FetchSavedItemMetadataJob.perform_later(@saved_item.id)
+      redirect_to inbox_path, notice: "Saved."
+    else
+      redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
+    end
+  rescue ActiveRecord::RecordNotUnique
+    # Race-safe dedupe: DB unique index (user_id, url) is the source of truth.
+    redirect_to inbox_path, notice: "Already saved."
   end
 
   def update

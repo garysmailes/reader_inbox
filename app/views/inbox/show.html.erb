@@ -1,5 +1,17 @@
 <h1>Inbox</h1>
 
-<p>Authenticated. Saved Items will appear here.</p>
+<%= tag.div(flash[:alert], style: "color:red") if flash[:alert].present? %>
+<%= tag.div(flash[:notice], style: "color:green") if flash[:notice].present? %>
+
+<%= form_with url: saved_items_path, scope: :saved_item do |form| %>
+  <%= form.url_field :url,
+    required: true,
+    autofocus: true,
+    placeholder: "Paste article URL" %>
+
+  <%= form.submit "Save" %>
+<% end %>
+
+<br>
 
 <%= button_to "Sign out", session_path, method: :delete %>
