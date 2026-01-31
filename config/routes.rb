@@ -15,5 +15,6 @@ Rails.application.routes.draw do
   post "/sign-up", to: "registrations#create"
 
   # Saved Items (URL capture)
-  resources :saved_items, only: %i[create]
+  resources :saved_items, only: %i[create destroy]
+
 end

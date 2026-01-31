@@ -49,8 +49,8 @@ class SavedItemsController < ApplicationController
   end
 
   def destroy
-    @saved_item = Current.user.saved_items.find(params[:id])
-    @saved_item.destroy
+    saved_item = Current.user.saved_items.find(params[:id])
+    saved_item.destroy
 
     redirect_to inbox_path, notice: "Removed."
   end
