@@ -1,24 +1,102 @@
-# README
+# Reading Inbox — Documentation
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This folder contains the **canonical documentation** for *Reading Inbox*.
 
-Things you may want to cover:
+Reading Inbox is a personal, mobile-first “read-it-later” system designed to:
+- capture long-form articles quickly via URL
+- return to them later in a calm, low-distraction inbox
+- track simple reading progression via explicit states
+- maintain a permanent personal archive
 
-* Ruby version
+The documentation here defines:
+- what the product is and is not
+- the meaning of core domain concepts
+- strict boundaries between MVP and roadmap
+- architectural and behavioural guardrails
 
-* System dependencies
+All product decisions and implementations must be traceable back to these documents.
 
-* Configuration
+---
 
-* Database creation
+## How to use these docs
 
-* Database initialization
+If you are:
+- **building features** → start with **[Product Outline](./product_outline.md)**
+- **making UX decisions** → read **[UI Principles](./ui_principles.md)**
+- **working with states or automation** → read **[State Model](./state_model.md)**
+- **handling URLs or metadata** → read **[URL Handling](./url_handling.md)** and **[Metadata Fetching](./metadata_fetching.md)**
+- **adding future ideas** → check **[Roadmap](./roadmap.md)** first
 
-* How to run the test suite
+If something is unclear or missing:
+- do not guess
+- update the docs first
+- then implement
 
-* Services (job queues, cache servers, search engines, etc.)
+The docs define truth.  
+The code implements it.
 
-* Deployment instructions
+---
 
-* ...
+## Canonical documents
+
+### Product definition
+
+- **[Product Outline](./product_outline.md)**  
+  The single source of truth for product scope, behaviour, and boundaries.  
+  All features and implementations must be traceable to this document.
+
+- **[Domain Language](./domain_language.md)**  
+  Defines canonical nouns and terms (e.g. “Saved Item”, “Inbox”, “Viewed”).  
+  Prevents naming drift across code, UI, and documentation.
+
+- **[State Model](./state_model.md)**  
+  Defines the explicit reading lifecycle and allowed state transitions.  
+  Clarifies what is automatic vs manual and what is never inferred.
+
+---
+
+### Behavioural guardrails
+
+- **[URL Handling](./url_handling.md)**  
+  Rules for URL ingestion, deduplication, and canonicalisation boundaries.
+
+- **[Metadata Fetching](./metadata_fetching.md)**  
+  Defines best-effort metadata behaviour and failure handling.  
+  Protects capture speed and user intent.
+
+- **[UI Principles](./ui_principles.md)**  
+  Mobile-first UX principles and interaction priorities.  
+  Guards against clutter, gamification, and distraction.
+
+- **[Architecture Decisions](./architecture_decisions.md)**  
+  Records architectural intent and constraints (Rails-way, Hotwire discipline, background jobs).
+
+---
+
+### Future-facing (non-binding)
+
+- **[Roadmap](./roadmap.md)**  
+  Explicitly out-of-scope ideas parked for later consideration.  
+  Items here must not leak into MVP behaviour.
+
+---
+
+## Canonical rules
+
+- The **[Product Outline](./product_outline.md)** is authoritative.
+- MVP behaviour must never be inferred from roadmap sections.
+- AI and automation are always subordinate to explicit user intent.
+- If behaviour changes, the docs must be updated before or alongside code.
+
+---
+
+## Status
+
+This documentation set is a **living system**.
+
+It is expected to evolve as:
+- new features are added
+- constraints are clarified
+- roadmap items are promoted into MVP
+
+Changes should be deliberate, explicit, and traceable.
