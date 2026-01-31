@@ -20,7 +20,9 @@ class SavedItem < ApplicationRecord
   validates :user, presence: true
   validates :url, uniqueness: { scope: :user_id }
 
+  # Scopes
   scope :for_user, ->(user) { where(user: user) }
+  scope :active_inbox, -> { where.not(state: "archived") }
 
   # Create-or-reuse a SavedItem for a given user + url.
   #
