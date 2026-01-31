@@ -21,7 +21,7 @@ class SavedItemsController < ApplicationController
 
     # Best-effort dedupe (exact string match; no aggressive normalisation)
     if (existing = Current.user.saved_items.find_by(url: url))
-      redirect_to inbox_path, notice: "Already saved."
+      redirect_to inbox_path(saved_item_id: existing.id), notice: "Already saved."
       return
     end
 
@@ -35,7 +35,12 @@ class SavedItemsController < ApplicationController
     end
   rescue ActiveRecord::RecordNotUnique
     # Race-safe dedupe: DB unique index (user_id, url) is the source of truth.
-    redirect_to inbox_path, notice: "Already saved."
+    existing = Current.user.saved_items.find_by(url: url)
+    if existing
+      redirect_to inbox_path(saved_item_id: existing.id), notice: "Already saved."
+    else
+      redirect_to inbox_path, notice: "Already saved."
+    end
   end
 
   def update
