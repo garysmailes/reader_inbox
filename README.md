@@ -21,11 +21,11 @@ All product decisions and implementations must be traceable back to these docume
 ## How to use these docs
 
 If you are:
-- **building features** → start with **[Product Outline](./product_outline.md)**
-- **making UX decisions** → read **[UI Principles](./ui_principles.md)**
-- **working with states or automation** → read **[State Model](./state_model.md)**
-- **handling URLs or metadata** → read **[URL Handling](./url_handling.md)** and **[Metadata Fetching](./metadata_fetching.md)**
-- **adding future ideas** → check **[Roadmap](./roadmap.md)** first
+- **building features** → start with **[Product Outline](./docs/product_outline.md)**
+- **making UX decisions** → read **[UI Principles](./docs/ui_principles.md)**
+- **working with states or automation** → read **[State Model](./docs/state_model.md)**
+- **handling URLs or metadata** → read **[URL Handling](./docs/url_handling.md)** and **[Metadata Fetching](./docs/metadata_fetching.md)**
+- **adding future ideas** → check **[Roadmap](./docs/roadmap.md)** first
 
 If something is unclear or missing:
 - do not guess
@@ -41,15 +41,15 @@ The code implements it.
 
 ### Product definition
 
-- **[Product Outline](./product_outline.md)**  
+- **[Product Outline](./docs/product_outline.md)**  
   The single source of truth for product scope, behaviour, and boundaries.  
   All features and implementations must be traceable to this document.
 
-- **[Domain Language](./domain_language.md)**  
+- **[Domain Language](./docs/domain_language.md)**  
   Defines canonical nouns and terms (e.g. “Saved Item”, “Inbox”, “Viewed”).  
   Prevents naming drift across code, UI, and documentation.
 
-- **[State Model](./state_model.md)**  
+- **[State Model](./docs/state_model.md)**  
   Defines the explicit reading lifecycle and allowed state transitions.  
   Clarifies what is automatic vs manual and what is never inferred.
 
@@ -57,25 +57,25 @@ The code implements it.
 
 ### Behavioural guardrails
 
-- **[URL Handling](./url_handling.md)**  
+- **[URL Handling](./docs/url_handling.md)**  
   Rules for URL ingestion, deduplication, and canonicalisation boundaries.
 
-- **[Metadata Fetching](./metadata_fetching.md)**  
+- **[Metadata Fetching](./docs/metadata_fetching.md)**  
   Defines best-effort metadata behaviour and failure handling.  
   Protects capture speed and user intent.
 
-- **[UI Principles](./ui_principles.md)**  
+- **[UI Principles](./docs/ui_principles.md)**  
   Mobile-first UX principles and interaction priorities.  
   Guards against clutter, gamification, and distraction.
 
-- **[Architecture Decisions](./architecture_decisions.md)**  
+- **[Architecture Decisions](./docs/architecture_decisions.md)**  
   Records architectural intent and constraints (Rails-way, Hotwire discipline, background jobs).
 
 ---
 
 ### Future-facing (non-binding)
 
-- **[Roadmap](./roadmap.md)**  
+- **[Roadmap](./docs/roadmap.md)**  
   Explicitly out-of-scope ideas parked for later consideration.  
   Items here must not leak into MVP behaviour.
 
@@ -83,7 +83,7 @@ The code implements it.
 
 ## Canonical rules
 
-- The **[Product Outline](./product_outline.md)** is authoritative.
+- The **[Product Outline](./docs/product_outline.md)** is authoritative.
 - MVP behaviour must never be inferred from roadmap sections.
 - AI and automation are always subordinate to explicit user intent.
 - If behaviour changes, the docs must be updated before or alongside code.
