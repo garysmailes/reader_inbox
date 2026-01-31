@@ -32,8 +32,15 @@ class SavedItemsController < ApplicationController
       flash[:saved_item_status] = "created"
       flash[:saved_item_id] = @saved_item.id
 
-      FetchSavedItemMetadataJob.perform_later(@saved_item.id)
-      redirect_to inbox_path, notice: "Saved."
+      begin
+        FetchSavedItemMetadataJob.perform_later(@saved_item.id)
+      rescue StandardError
+        # Metadata fetching is opportunistic and must never block saving.
+        nil
+      end
+
+redirect_to inbox_path, notice: "Saved."
+
     else
       redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
     end
