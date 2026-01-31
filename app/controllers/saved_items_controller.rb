@@ -2,9 +2,7 @@ class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
 
   def index
-    @saved_items = Current.user
-      .saved_items
-      .order(created_at: :desc)
+    @saved_items = Current.user.saved_items.order(created_at: :desc)
   end
 
   def create
@@ -39,8 +37,7 @@ class SavedItemsController < ApplicationController
         nil
       end
 
-redirect_to inbox_path, notice: "Saved."
-
+      redirect_to inbox_path, notice: "Saved."
     else
       redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
     end
@@ -52,9 +49,6 @@ redirect_to inbox_path, notice: "Saved."
     flash[:saved_item_id] = existing.id
     redirect_to inbox_path, notice: "Already saved."
   end
-
-
-
 
   def update
     @saved_item = Current.user.saved_items.find(params[:id])
