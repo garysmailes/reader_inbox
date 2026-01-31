@@ -1,5 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
+  before_action :set_saved_item, only: [:update, :destroy]
 
   def index
     @saved_items = Current.user.saved_items.order(created_at: :desc)
@@ -39,7 +40,8 @@ class SavedItemsController < ApplicationController
 
       redirect_to inbox_path, notice: "Saved."
     else
-      redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
+      redirect_to inbox_path,
+                  alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
     end
   rescue ActiveRecord::RecordNotUnique
     # Race-safe dedupe: DB unique index (user_id, url) is the source of truth.
@@ -51,8 +53,6 @@ class SavedItemsController < ApplicationController
   end
 
   def update
-    @saved_item = Current.user.saved_items.find(params[:id])
-
     if @saved_item.update(saved_item_params)
       redirect_to inbox_path, notice: "Updated."
     else
@@ -61,13 +61,15 @@ class SavedItemsController < ApplicationController
   end
 
   def destroy
-    saved_item = Current.user.saved_items.find(params[:id])
-    saved_item.destroy
-
+    @saved_item.destroy
     redirect_to inbox_path, notice: "Removed."
   end
 
   private
+
+  def set_saved_item
+    @saved_item = Current.user.saved_items.find(params[:id])
+  end
 
   def saved_item_params
     # user_id is deliberately NOT permitted

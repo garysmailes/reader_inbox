@@ -1,5 +1,4 @@
 class SavedItem < ApplicationRecord
-
   belongs_to :user
 
   ALLOWED_STATES = %w[unread viewed read archived].freeze
@@ -13,14 +12,14 @@ class SavedItem < ApplicationRecord
        },
        default: "unread"
 
-
+  before_validation :set_default_state, on: :create
   before_validation :derive_domain_from_url, if: -> { domain.blank? && url.present? }
 
+  validates :state, presence: true, inclusion: { in: ALLOWED_STATES }
   validates :url, presence: true
   validates :user, presence: true
   validates :url, uniqueness: { scope: :user_id }
-  validates :state, presence: true, inclusion: { in: ALLOWED_STATES }
-  
+
   scope :for_user, ->(user) { where(user: user) }
 
   # Create-or-reuse a SavedItem for a given user + url.
@@ -39,6 +38,12 @@ class SavedItem < ApplicationRecord
   rescue ActiveRecord::RecordNotUnique
     # In case of concurrent insert, fall back to finding the existing record.
     [user.saved_items.find_by!(url: url), true]
+  end
+
+  # Ensure a canonical default state on create.
+  # Do NOT infer any lifecycle progression here.
+  def set_default_state
+    self.state = "unread" if state.blank?
   end
 
   # Best-effort domain derivation from url.
@@ -83,6 +88,4 @@ class SavedItem < ApplicationRecord
   rescue URI::InvalidURIError
     nil
   end
-
-
 end
