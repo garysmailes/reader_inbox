@@ -18,6 +18,8 @@ class SavedItemsController < ApplicationController
     # Best-effort dedupe (exact string match; no aggressive normalisation)
     existing = Current.user.saved_items.find_by(url: url)
     if existing
+      existing.ensure_domain!
+
       flash[:saved_item_status] = "already_saved"
       flash[:saved_item_id] = existing.id
       redirect_to inbox_path, notice: "Already saved."
