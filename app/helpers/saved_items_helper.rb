@@ -7,9 +7,8 @@ module SavedItemsHelper
       .sub(/\Awww\./, "")
   end
 
-    def metadata_unavailable?(saved_item)
-      # Show this note only when we had to fall back to displaying the clean URL,
-      # i.e., when the title is unavailable.
-      saved_item.fetched_title.blank?
-    end
+  def metadata_unavailable?(saved_item)
+    saved_item.fetched_title.blank? && saved_item.domain.blank?
+  end
+
 end
