@@ -1,17 +1,26 @@
-<h1>Inbox</h1>
+<div class="inbox">
+  <div class="inbox__card">
+    <h1 class="inbox__title">Reading Inbox</h1>
+    <p class="inbox__hint">
+      Paste a link now. Read it later.
+    </p>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert].present? %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice].present? %>
+    <% if flash[:alert].present? %>
+      <div class="inbox__alert"><%= flash[:alert] %></div>
+    <% end %>
 
-<%= form_with url: saved_items_path, scope: :saved_item do |form| %>
-  <%= form.url_field :url,
-    required: true,
-    autofocus: true,
-    placeholder: "Paste article URL" %>
+    <% if flash[:notice].present? %>
+      <div class="inbox__notice"><%= flash[:notice] %></div>
+    <% end %>
 
-  <%= form.submit "Save" %>
-<% end %>
+    <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
+      <%= form.url_field :url,
+        required: true,
+        autofocus: true,
+        placeholder: "https://example.com/article",
+        class: "inbox__input" %>
 
-<br>
-
-<%= button_to "Sign out", session_path, method: :delete %>
+      <%= form.submit "Save", class: "inbox__button" %>
+    <% end %>
+  </div>
+</div>

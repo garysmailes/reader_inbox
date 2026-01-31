@@ -1,0 +1,104 @@
+/* Inbox — mobile-first URL capture
+   Calm, editorial, Open Props compliant.
+*/
+
+.inbox {
+  min-block-size: 100dvh;
+  display: grid;
+  place-items: start center;
+  padding: var(--size-5);
+}
+
+.inbox__card {
+  inline-size: 100%;
+  max-inline-size: var(--size-xs);
+  display: grid;
+  gap: var(--size-4);
+
+  padding: var(--size-6);
+  background: var(--ri-surface);
+
+  border: var(--border-size-1) solid var(--ri-border);
+  border-radius: var(--ri-radius);
+  box-shadow: var(--shadow-1);
+}
+
+.inbox__title {
+  margin: 0;
+  font-size: var(--font-size-6);
+  line-height: var(--font-lineheight-1);
+  font-family: var(--ri-font-body);
+}
+
+.inbox__hint {
+  margin: calc(var(--size-2) * -1) 0 0 0;
+  color: var(--ri-muted);
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-0);
+  letter-spacing: var(--font-letterspacing-1);
+}
+
+.inbox__form {
+  display: grid;
+  gap: var(--size-3);
+}
+
+.inbox__input {
+  inline-size: 100%;
+  padding: var(--size-3);
+
+  border-radius: var(--ri-radius);
+  border: var(--border-size-1) solid var(--gray-4);
+  background: white;
+  color: var(--ri-text);
+
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-1);
+  line-height: var(--font-lineheight-2);
+
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.inbox__input:focus {
+  outline: none;
+  border-color: var(--indigo-6);
+  box-shadow:
+    0 0 0 var(--border-size-2) var(--indigo-1);
+}
+
+.inbox__button {
+  inline-size: 100%;
+  padding: var(--size-3);
+
+  border-radius: var(--ri-radius);
+  border: var(--border-size-1) solid var(--gray-9);
+  background: var(--gray-9);
+  color: var(--gray-0);
+
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-1);
+  line-height: var(--font-lineheight-2);
+}
+
+.inbox__notice {
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-0);
+  color: var(--ri-muted);
+}
+
+.inbox__alert {
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-0);
+  color: var(--red-6);
+}
+
+@media (min-width: 48rem) {
+  .inbox {
+    place-items: center;
+    padding: var(--size-7);
+  }
+
+  .inbox__card {
+    padding: var(--size-7);
+  }
+}
