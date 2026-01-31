@@ -15,23 +15,33 @@ class SavedItemsController < ApplicationController
       return
     end
 
-    saved_item, already_saved = SavedItem.create_or_reuse_for(user: Current.user, url: url)
-
-    # Provide a structured indicator the UI can use (beyond copy).
-    flash[:saved_item_status] = already_saved ? "already_saved" : "created"
-    flash[:saved_item_id] = saved_item.id
-
-    if already_saved
+    # Best-effort dedupe (exact string match; no aggressive normalisation)
+    existing = Current.user.saved_items.find_by(url: url)
+    if existing
+      flash[:saved_item_status] = "already_saved"
+      flash[:saved_item_id] = existing.id
       redirect_to inbox_path, notice: "Already saved."
       return
     end
 
-    # Metadata enrichment remains non-blocking and is only triggered for new records.
-    FetchSavedItemMetadataJob.perform_later(saved_item.id)
+    @saved_item = Current.user.saved_items.new(url: url)
 
-    redirect_to inbox_path, notice: "Saved."
-  rescue ActiveRecord::RecordInvalid => e
-    redirect_to inbox_path, alert: e.record.errors.full_messages.to_sentence.presence || "Could not save URL."
+    if @saved_item.save
+      flash[:saved_item_status] = "created"
+      flash[:saved_item_id] = @saved_item.id
+
+      FetchSavedItemMetadataJob.perform_later(@saved_item.id)
+      redirect_to inbox_path, notice: "Saved."
+    else
+      redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
+    end
+  rescue ActiveRecord::RecordNotUnique
+    # Race-safe dedupe: DB unique index (user_id, url) is the source of truth.
+    existing = Current.user.saved_items.find_by!(url: url)
+
+    flash[:saved_item_status] = "already_saved"
+    flash[:saved_item_id] = existing.id
+    redirect_to inbox_path, notice: "Already saved."
   end
 
 
