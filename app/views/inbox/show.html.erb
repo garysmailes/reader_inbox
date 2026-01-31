@@ -30,35 +30,25 @@
     <% if @saved_items.present? %>
       <ul class="inbox__list" aria-label="Saved items">
         <% @saved_items.each do |item| %>
-          <% clean_url = item.url.to_s.strip.sub(/\Ahttps?:\/\//, "").sub(/\Awww\./, "") %>
-
           <li class="inbox__item">
-            <% if item.fetched_title.present? %>
-              <p class="inbox__item_title">
-                <a class="inbox__item_link" href="<%= item.url %>" target="_blank" rel="noopener noreferrer">
-                  <%= item.fetched_title %>
-                </a>
-              </p>
+            <p class="inbox__item_title">
+              <a class="inbox__item_link"
+                 href="<%= item.url %>"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                <%= item.fetched_title.presence || clean_url_for(item) %>
+              </a>
+            </p>
 
-              <div class="inbox__item_meta">
-                <% if item.domain.present? %>
-                  <span class="inbox__item_domain"><%= item.domain %></span>
-                <% else %>
-                  <span class="inbox__item_domain"><%= clean_url %></span>
-                  <span class="inbox__item_note">Metadata unavailable</span>
-                <% end %>
-              </div>
-            <% else %>
-              <p class="inbox__item_title">
-                <a class="inbox__item_link" href="<%= item.url %>" target="_blank" rel="noopener noreferrer">
-                  <%= clean_url %>
-                </a>
-              </p>
+            <div class="inbox__item_meta">
+              <% if item.domain.present? %>
+                <span class="inbox__item_domain"><%= item.domain %></span>
+              <% end %>
 
-              <div class="inbox__item_meta">
+              <% if metadata_unavailable?(item) %>
                 <span class="inbox__item_note">Metadata unavailable</span>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           </li>
         <% end %>
       </ul>
