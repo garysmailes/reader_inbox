@@ -11,4 +11,13 @@ module SavedItemsHelper
     saved_item.fetched_title.blank?
   end
 
+  def saved_item_state_label(saved_item)
+    case saved_item.state.to_s
+    when "unread" then "Unread"
+    when "viewed" then "Viewed"
+    when "read" then "Read"
+    when "archived" then "Archived"
+    else "Unknown"
+    end
+  end
 end

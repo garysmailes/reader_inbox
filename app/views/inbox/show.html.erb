@@ -37,6 +37,10 @@
             </p>
 
             <div class="inbox__item_meta">
+              <span class="inbox__item_state inbox__item_state--<%= item.state %>">
+                <%= saved_item_state_label(item) %>
+              </span>
+
               <% if item.domain.present? %>
                 <span class="inbox__item_domain"><%= item.domain %></span>
               <% elsif item.fetched_title.present? %>
