@@ -19,11 +19,9 @@ class SavedItem < ApplicationRecord
   validates :url, presence: true
   validates :user, presence: true
   validates :url, uniqueness: { scope: :user_id }
-   validates :state, presence: true, inclusion: { in: ALLOWED_STATES }
+  validates :state, presence: true, inclusion: { in: ALLOWED_STATES }
   
   scope :for_user, ->(user) { where(user: user) }
-
-
 
   # Create-or-reuse a SavedItem for a given user + url.
   #
