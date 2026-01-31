@@ -39,3 +39,14 @@ Any new unauthenticated route must be:
 
 - explicitly documented, and
 - explicitly exempted from authentication.
+
+## Sign-up (MVP)
+
+- Route: `/sign-up`
+- Fields: email_address, password, password_confirmation
+- On success:
+  - User is created
+  - User is signed in using Rails 8 authentication defaults (`start_new_session_for`)
+  - User is redirected to `/inbox`
+- No additional onboarding fields or roles exist in MVP.
+

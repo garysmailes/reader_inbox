@@ -1,5 +1,7 @@
 class RegistrationsController < ApplicationController
-  before_action :require_no_authentication
+  # Your app is deny-by-default (ApplicationController requires auth),
+  # so sign-up must be explicitly public.
+  allow_unauthenticated_access only: %i[new create]
 
   def new
     @user = User.new
@@ -9,13 +11,8 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      # Rails 8 auth generator uses a Session model; create one to sign in.
-      session_record = @user.sessions.create!(
-        user_agent: request.user_agent,
-        ip_address: request.remote_ip
-      )
-
-      cookies.signed.permanent[:session_token] = session_record.token
+      # Use Rails 8 authentication defaults (defined in Authentication concern)
+      start_new_session_for(@user)
       redirect_to inbox_path, notice: "Welcome."
     else
       render :new, status: :unprocessable_entity
