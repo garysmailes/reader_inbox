@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # Inbox (authenticated surface)
+  get "/inbox", to: "inbox#show", as: :inbox
+  root to: redirect("/inbox")
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Rails 8 built-in authentication (generated)
+  # (These routes should exist after `bin/rails generate authentication`)
+  resource :session, only: %i[new create destroy]
+  resources :passwords, only: %i[new create edit update]
+
+  # Sign-up (we add this)
+  get  "/sign-up", to: "registrations#new",    as: :sign_up
+  post "/sign-up", to: "registrations#create"
 end
