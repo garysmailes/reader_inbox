@@ -1,14 +1,29 @@
 class SavedItem < ApplicationRecord
+
   belongs_to :user
+
+  ALLOWED_STATES = %w[unread viewed read archived].freeze
+
+  enum :state,
+       {
+         unread: "unread",
+         viewed: "viewed",
+         read: "read",
+         archived: "archived"
+       },
+       default: "unread"
+
 
   before_validation :derive_domain_from_url, if: -> { domain.blank? && url.present? }
 
   validates :url, presence: true
   validates :user, presence: true
   validates :url, uniqueness: { scope: :user_id }
+   validates :state, presence: true, inclusion: { in: ALLOWED_STATES }
   
-
   scope :for_user, ->(user) { where(user: user) }
+
+
 
   # Create-or-reuse a SavedItem for a given user + url.
   #
