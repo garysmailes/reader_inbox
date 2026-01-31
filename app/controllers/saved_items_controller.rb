@@ -1,6 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: [:open, :destroy]
+  before_action :set_saved_item, only: [:open, :destroy, :update_state]
 
   def create
     url = params.dig(:saved_item, :url).to_s.strip
@@ -64,16 +64,14 @@ class SavedItemsController < ApplicationController
     redirect_to inbox_path, alert: "Could not open that URL."
   end
 
- def update_state
-    saved_item = Current.user.saved_items.find(params[:id])
-
-    if saved_item.update(saved_item_state_params)
+  def update_state
+    if @saved_item.update(saved_item_state_params)
       redirect_to inbox_path, notice: "Updated."
     else
-      redirect_to inbox_path, alert: saved_item.errors.full_messages.to_sentence.presence || "Could not update state."
+      redirect_to inbox_path,
+                  alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not update state."
     end
   end
-  
 
   def destroy
     @saved_item.destroy
