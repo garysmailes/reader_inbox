@@ -14,8 +14,9 @@ class SavedItemsController < ApplicationController
   def create
     @saved_item = Current.user.saved_items.new(saved_item_params)
 
-    if @saved_item.save
-      redirect_to inbox_path, notice: "Saved."
+  if @saved_item.save
+    FetchSavedItemMetadataJob.perform_later(@saved_item.id)
+    redirect_to inbox_path, notice: "Saved."
     else
       render :new, status: :unprocessable_entity
     end
