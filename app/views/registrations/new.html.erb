@@ -1,44 +1,54 @@
-<h1>Create account</h1>
+<div class="auth">
+  <div class="auth__card">
+    <h1 class="auth__title">Create account</h1>
+    <p class="auth__hint">Simple onboarding. No extras.</p>
 
-<% if @user.errors.any? %>
-  <div style="color:red">
-    <p>Please fix the following:</p>
-    <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
+    <% if @user&.errors&.any? %>
+      <div class="auth__flash auth__flash--alert">
+        <ul style="margin: 0; padding-left: 18px;">
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @user, url: sign_up_path, class: "auth__form" do |form| %>
+      <div class="auth__field">
+        <%= form.label :email_address, "Email", class: "auth__label" %>
+        <%= form.email_field :email_address,
+          required: true,
+          autofocus: true,
+          autocomplete: "username",
+          placeholder: "Email address",
+          class: "auth__input" %>
+      </div>
+
+      <div class="auth__field">
+        <%= form.label :password, "Password", class: "auth__label" %>
+        <%= form.password_field :password,
+          required: true,
+          autocomplete: "new-password",
+          placeholder: "Password",
+          class: "auth__input" %>
+      </div>
+
+      <div class="auth__field">
+        <%= form.label :password_confirmation, "Confirm password", class: "auth__label" %>
+        <%= form.password_field :password_confirmation,
+          required: true,
+          autocomplete: "new-password",
+          placeholder: "Confirm password",
+          class: "auth__input" %>
+      </div>
+
+      <div class="auth__actions">
+        <%= form.submit "Create account", class: "auth__button" %>
+      </div>
+    <% end %>
+
+    <div class="auth__links">
+      <%= link_to "Already have an account? Sign in", new_session_path %>
+    </div>
   </div>
-<% end %>
-
-<%= form_with model: @user, url: sign_up_path do |form| %>
-  <div>
-    <%= form.email_field :email_address,
-      required: true,
-      autofocus: true,
-      autocomplete: "username",
-      placeholder: "Email address" %>
-  </div>
-
-  <div>
-    <%= form.password_field :password,
-      required: true,
-      autocomplete: "new-password",
-      placeholder: "Password" %>
-  </div>
-
-  <div>
-    <%= form.password_field :password_confirmation,
-      required: true,
-      autocomplete: "new-password",
-      placeholder: "Confirm password" %>
-  </div>
-
-  <div>
-    <%= form.submit "Create account" %>
-  </div>
-<% end %>
-
-<p>
-  <%= link_to "Already have an account? Sign in", new_session_path %>
-</p>
+</div>

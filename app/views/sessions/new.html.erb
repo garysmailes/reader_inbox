@@ -1,15 +1,43 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="auth">
+  <div class="auth__card">
+    <h1 class="auth__title">Sign in</h1>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+    <% if flash[:alert].present? %>
+      <div class="auth__flash auth__flash--alert"><%= flash[:alert] %></div>
+    <% end %>
 
-<%= link_to "Forgot password?", new_password_path %>
+    <% if flash[:notice].present? %>
+      <div class="auth__flash auth__flash--notice"><%= flash[:notice] %></div>
+    <% end %>
 
-<br>
-<%= link_to "Create an account", sign_up_path %>
+    <%= form_with url: session_path, class: "auth__form" do |form| %>
+      <div class="auth__field">
+        <%= form.label :email_address, "Email", class: "auth__label" %>
+        <%= form.email_field :email_address,
+          required: true,
+          autofocus: true,
+          autocomplete: "username",
+          placeholder: "Email address",
+          class: "auth__input" %>
+      </div>
 
+      <div class="auth__field">
+        <%= form.label :password, "Password", class: "auth__label" %>
+        <%= form.password_field :password,
+          required: true,
+          autocomplete: "current-password",
+          placeholder: "Password",
+          class: "auth__input" %>
+      </div>
+
+      <div class="auth__actions">
+        <%= form.submit "Sign in", class: "auth__button" %>
+      </div>
+    <% end %>
+
+    <div class="auth__links">
+      <%= link_to "Create an account", sign_up_path %>
+      <%= link_to "Forgot password?", new_password_path %>
+    </div>
+  </div>
+</div>

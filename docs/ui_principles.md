@@ -176,3 +176,27 @@ this document must be consulted and updated first.
 
 The UI should feel quiet enough to disappear.
 
+## Visual styling reference
+
+The Reading Inbox UI should feel **editorial and quiet**, similar in spirit to Instapaper:
+
+- narrow, readable columns
+- generous whitespace
+- minimal chrome (no heavy panels or dashboards)
+- typography-forward (serif-forward reading tone, system-ui for form controls)
+- restrained color usage (links are visible but not loud)
+
+This is a **directional reference**, not a template:
+we do not copy layouts verbatim, but we do preserve the same *calm reading-first* feeling.
+
+### Typography (Canonical)
+
+The UI uses **Open Props font families exclusively**.
+
+- **Primary reading and headings:** `--font-transitional`
+  - Editorial, book-like tone suitable for long-form reading
+- **UI controls and forms:** `--font-system-ui`
+  - Native system fonts for speed, familiarity, and mobile ergonomics
+
+No custom font stacks or external font services are used.
+All typography decisions must reference Open Props variables directly.

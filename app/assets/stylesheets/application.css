@@ -10,6 +10,9 @@
  */
 
  /* Foundations */
-    
 @import "foundations/reset.css";
 @import "foundations/open-props.css";
+@import "foundations/theme.css";
+
+/* Components */
+@import "components/auth.css";

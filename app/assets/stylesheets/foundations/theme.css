@@ -1,0 +1,57 @@
+/* Reading Inbox — Editorial theme (Open Props only)
+   Instapaper-inspired: calm, readable, low contrast.
+*/
+
+:where(html) {
+  /* Open Props font families */
+  --ri-font-body: var(--font-transitional);
+  --ri-font-ui: var(--font-system-ui);
+
+  /* Softer paper-like background */
+  --ri-bg: var(--gray-1);
+  --ri-surface: var(--gray-0);
+
+  --ri-text: var(--gray-9);
+  --ri-muted: var(--gray-7);
+  --ri-border: var(--gray-3);
+
+  --ri-link: var(--indigo-7);
+  --ri-link-hover: var(--indigo-8);
+
+  --ri-radius: var(--radius-2);
+  --ri-shadow: var(--shadow-1); /* subtle by default */
+}
+
+:where(body) {
+  margin: 0;
+  background: var(--ri-bg);
+  color: var(--ri-text);
+
+  font-family: var(--ri-font-body);
+  font-size: var(--font-size-2);        /* slightly larger on mobile */
+  line-height: var(--font-lineheight-4);
+
+  text-rendering: optimizeLegibility;
+}
+
+/* Slight bump on larger screens */
+@media (min-width: 48rem) {
+  :where(body) {
+    font-size: var(--font-size-3);
+  }
+}
+
+:where(a) {
+  color: var(--ri-link);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+:where(a:hover) {
+  color: var(--ri-link-hover);
+}
+
+:where(h1, h2, h3) {
+  font-family: var(--ri-font-body);
+  letter-spacing: var(--font-letterspacing-0);
+}
