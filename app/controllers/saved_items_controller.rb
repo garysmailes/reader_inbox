@@ -64,6 +64,17 @@ class SavedItemsController < ApplicationController
     redirect_to inbox_path, alert: "Could not open that URL."
   end
 
+ def update_state
+    saved_item = Current.user.saved_items.find(params[:id])
+
+    if saved_item.update(saved_item_state_params)
+      redirect_to inbox_path, notice: "Updated."
+    else
+      redirect_to inbox_path, alert: saved_item.errors.full_messages.to_sentence.presence || "Could not update state."
+    end
+  end
+  
+
   def destroy
     @saved_item.destroy
     redirect_to inbox_path, notice: "Removed."
@@ -78,5 +89,9 @@ class SavedItemsController < ApplicationController
   def saved_item_params
     # user_id is deliberately NOT permitted
     params.require(:saved_item).permit(:url)
+  end
+
+  def saved_item_state_params
+    params.require(:saved_item).permit(:state)
   end
 end

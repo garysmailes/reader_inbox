@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :saved_items, only: %i[create destroy] do
     member do
       get :open
+      patch :state
     end
   end
 
