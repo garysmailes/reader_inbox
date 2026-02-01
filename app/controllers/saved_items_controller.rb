@@ -52,26 +52,13 @@ class SavedItemsController < ApplicationController
   # - Never auto-mark Read.
   # - No behavior/engagement inference.
   def open
-    if @saved_item.unread?
-      @saved_item.update!(
-        state: "viewed",
-        last_viewed_at: Time.current
-      )
-    end
+    @saved_item.mark_first_open_as_viewed!
 
     redirect_to @saved_item.url, allow_other_host: true
   rescue ActionController::Redirecting::UnsafeRedirectError, URI::InvalidURIError
     redirect_to inbox_path, alert: "Could not open that URL."
   end
 
-  def update_state
-    if @saved_item.update(saved_item_state_params)
-      redirect_to inbox_path, notice: "Updated."
-    else
-      redirect_to inbox_path,
-                  alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not update state."
-    end
-  end
 
   def destroy
     @saved_item.destroy
