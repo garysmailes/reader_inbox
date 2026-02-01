@@ -23,6 +23,8 @@ class SavedItem < ApplicationRecord
   # Scopes
   scope :for_user, ->(user) { where(user: user) }
   scope :active_inbox, -> { where.not(state: "archived") }
+  scope :archived, -> { where(state: "archived") }
+
 
   # Create-or-reuse a SavedItem for a given user + url.
   #
