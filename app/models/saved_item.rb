@@ -72,29 +72,38 @@ class SavedItem < ApplicationRecord
   end
 
   def self.extract_domain(raw_url)
-      return nil if raw_url.blank?
+    return nil if raw_url.blank?
 
-      s = raw_url.to_s.strip
-      return nil if s.blank?
+    s = raw_url.to_s.strip
+    return nil if s.blank?
 
-      uri = URI.parse(s)
+    uri = URI.parse(s)
+    host = uri.host
+
+    # Handle URLs without scheme (e.g., "example.com/path") as best-effort.
+    if host.blank? && uri.scheme.nil?
+      uri = URI.parse("https://#{s}")
       host = uri.host
-
-      # Handle URLs without scheme (e.g., "example.com/path") as best-effort.
-      if host.blank? && uri.scheme.nil?
-        uri = URI.parse("https://#{s}")
-        host = uri.host
-      end
-
-      host&.downcase
-    rescue URI::InvalidURIError
-      nil
     end
 
-    def mark_first_open_as_viewed!
-    return unless unread?
-
-    update!(state: "viewed", last_viewed_at: Time.current)
+    host&.downcase
+  rescue URI::InvalidURIError
+    nil
   end
 
+  # "First open" automation:
+  # - If Unread, transition to Viewed and record last_viewed_at.
+  # - Never auto-mark Read.
+  # - Best-effort: must not block opening the link.
+  def mark_first_open_as_viewed!
+    return unless unread?
+
+    update_columns(
+      state: "viewed",
+      last_viewed_at: Time.current,
+      updated_at: Time.current
+    )
+  rescue StandardError
+    nil
+  end
 end
