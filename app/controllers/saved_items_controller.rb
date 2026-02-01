@@ -1,6 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: [:open, :destroy, :update_state, :archive]
+  before_action :set_saved_item, only: [:open, :destroy, :update_state, :archive, :unarchive]
 
   def create
     url = params.dig(:saved_item, :url).to_s.strip
@@ -99,6 +99,35 @@ class SavedItemsController < ApplicationController
       redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
     end
   end
+
+  # Explicit user intent: move item OUT of Archived into an explicit non-archived state.
+  #
+  # Contract:
+  # - Caller must provide an explicit target state via params[:state]
+  # - Allowed targets: unread, viewed, read
+  # - We do NOT infer a "restore previous state" rule here.
+  def unarchive
+    target_state = params[:state].to_s
+
+    allowed_targets = %w[unread viewed read]
+    unless allowed_targets.include?(target_state)
+      redirect_back fallback_location: inbox_path, alert: "Invalid unarchive state."
+      return
+    end
+
+    # Keep behavior strict and predictable: only unarchive items that are currently archived.
+    unless @saved_item.state == "archived"
+      redirect_back fallback_location: inbox_path, alert: "Item is not archived."
+      return
+    end
+
+    if @saved_item.update(state: target_state)
+      redirect_back fallback_location: inbox_path, notice: "Unarchived."
+    else
+      redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
+    end
+  end
+
 
 
   private
