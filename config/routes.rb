@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     member do
       get :open
       patch :state, to: "saved_items#update_state"
+      patch :archive, to: "saved_items#archive"
       patch :read, to: "saved_items#mark_read"
     end
   end

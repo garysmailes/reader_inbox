@@ -1,6 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: [:open, :destroy, :update_state]
+  before_action :set_saved_item, only: [:open, :destroy, :update_state, :archive]
 
   def create
     url = params.dig(:saved_item, :url).to_s.strip
@@ -87,6 +87,19 @@ class SavedItemsController < ApplicationController
       redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
     end
   end
+
+  # Explicit user intent: move item into Archived state.
+  # - Auth is enforced globally in ApplicationController.
+  # - Ownership is enforced by set_saved_item scoping to Current.user.
+  # - No deletion; this is a state change only.
+  def archive
+    if @saved_item.update(state: "archived")
+      redirect_back fallback_location: inbox_path, notice: "Archived."
+    else
+      redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
+    end
+  end
+
 
   private
 
