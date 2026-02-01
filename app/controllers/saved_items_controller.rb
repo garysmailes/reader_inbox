@@ -1,7 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: [:open, :destroy, :update_state, :mark_read]
-
+  before_action :set_saved_item, only: [:open, :destroy, :update_state]
 
   def create
     url = params.dig(:saved_item, :url).to_s.strip
@@ -65,11 +64,20 @@ class SavedItemsController < ApplicationController
     redirect_to inbox_path, notice: "Removed."
   end
 
+  # Manual, reversible state updates.
+  # - User-initiated only (never called by automation).
+  # - Scoped to Current.user via set_saved_item.
+  # - Does not infer reading; "read" is allowed only via explicit user action.
   def update_state
     requested_state = saved_item_state_params[:state].to_s
 
     if requested_state.blank?
       redirect_back fallback_location: inbox_path, alert: "State is required."
+      return
+    end
+
+    unless SavedItem::ALLOWED_STATES.include?(requested_state)
+      redirect_back fallback_location: inbox_path, alert: "Invalid state."
       return
     end
 
@@ -79,15 +87,6 @@ class SavedItemsController < ApplicationController
       redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
     end
   end
-
-  def mark_read
-    if @saved_item.update(state: "read")
-      redirect_back fallback_location: inbox_path, notice: "Marked as read."
-    else
-      redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
-    end
-  end
-
 
   private
 
