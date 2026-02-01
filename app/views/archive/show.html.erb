@@ -35,14 +35,16 @@
                 <span class="inbox__item_domain"><%= clean_url_for(item) %></span>
               <% end %>
 
-              <div class="inbox__item_actions">
-                <%= button_to "Unarchive",
-                  state_saved_item_path(item),
-                  method: :patch,
-                  params: { saved_item: { state: "unread" } },
-                  class: "inbox__item_action",
-                  form_class: "inbox__item_action_form" %>
-              </div>
+            <div class="inbox__item_actions">
+              <%= button_to "Unarchive",
+                unarchive_saved_item_path(item),
+                method: :patch,
+                params: { saved_item: { state: "unread" } },
+                class: "inbox__item_action",
+                form_class: "inbox__item_action_form",
+                title: "Moves the item back into your inbox" %>
+            </div>
+
             </div>
           </li>
         <% end %>

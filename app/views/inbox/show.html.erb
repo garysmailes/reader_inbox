@@ -64,12 +64,13 @@
                 <% end %>
 
                 <%= button_to "Archive",
-                  state_saved_item_path(item),
+                  archive_saved_item_path(item),
                   method: :patch,
-                  params: { saved_item: { state: "archived" } },
                   class: "inbox__item_action inbox__item_action--subtle",
-                  form_class: "inbox__item_action_form" %>
+                  form_class: "inbox__item_action_form",
+                  title: "Archive keeps the item but removes it from your inbox" %>
               </div>
+
             </div>
           </li>
         <% end %>
