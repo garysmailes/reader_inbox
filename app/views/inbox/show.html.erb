@@ -5,17 +5,15 @@
       <a class="inbox__nav_link" href="<%= archive_path %>">Archive</a>
     </div>
 
-<p class="inbox__hint">Paste a link now. Read it later.</p>
-
+    <p class="inbox__hint">Paste a link now. Read it later.</p>
 
     <% if flash[:alert].present? %>
       <div class="inbox__alert"><%= flash[:alert] %></div>
     <% end %>
 
-  <% if flash[:notice].present? %>
-    <div class="inbox__notice"><%= flash[:notice] %></div>
-  <% end %>
-
+    <% if flash[:notice].present? %>
+      <div class="inbox__notice"><%= flash[:notice] %></div>
+    <% end %>
 
     <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
       <%= form.url_field :url,
@@ -33,46 +31,46 @@
           <li class="inbox__item">
             <p class="inbox__item_title">
               <a class="inbox__item_link"
-                href="<%= open_saved_item_path(item) %>"
-                target="_blank"
-                rel="noopener noreferrer">
+                 href="<%= open_saved_item_path(item) %>"
+                 target="_blank"
+                 rel="noopener noreferrer">
                 <%= item.fetched_title.presence || clean_url_for(item) %>
               </a>
-
             </p>
 
-          <div class="inbox__item_meta">
-            <% if item.domain.present? %>
-              <span class="inbox__item_domain"><%= item.domain %></span>
-            <% elsif item.fetched_title.present? %>
-              <span class="inbox__item_domain"><%= clean_url_for(item) %></span>
-            <% end %>
+            <div class="inbox__item_meta">
+              <span class="inbox__item_state inbox__item_state--<%= item.state %>">
+                <%= item.state.capitalize %>
+              </span>
 
-            <% if metadata_unavailable?(item) %>
-              <span class="inbox__item_note">Metadata was not available</span>
-            <% end %>
-            
-          <div class="inbox__item_actions">
-            <% unless item.read? %>
-              <%= button_to "Mark read",
-                state_saved_item_path(item),
-                method: :patch,
-                params: { saved_item: { state: "read" } },
-                class: "inbox__item_action",
-                form_class: "inbox__item_action_form" %>
-            <% end %>
+              <% if item.domain.present? %>
+                <span class="inbox__item_domain"><%= item.domain %></span>
+              <% elsif item.fetched_title.present? %>
+                <span class="inbox__item_domain"><%= clean_url_for(item) %></span>
+              <% end %>
 
-            <%= button_to "Archive",
-              state_saved_item_path(item),
-              method: :patch,
-              params: { saved_item: { state: "archived" } },
-              class: "inbox__item_action inbox__item_action--subtle",
-              form_class: "inbox__item_action_form" %>
-          </div>
+              <% if metadata_unavailable?(item) %>
+                <span class="inbox__item_note">Metadata was not available</span>
+              <% end %>
 
-          </div>
+              <div class="inbox__item_actions">
+                <% unless item.read? %>
+                  <%= button_to "Set read",
+                    state_saved_item_path(item),
+                    method: :patch,
+                    params: { saved_item: { state: "read" } },
+                    class: "inbox__item_action",
+                    form_class: "inbox__item_action_form" %>
+                <% end %>
 
-
+                <%= button_to "Archive",
+                  state_saved_item_path(item),
+                  method: :patch,
+                  params: { saved_item: { state: "archived" } },
+                  class: "inbox__item_action inbox__item_action--subtle",
+                  form_class: "inbox__item_action_form" %>
+              </div>
+            </div>
           </li>
         <% end %>
       </ul>
