@@ -3,7 +3,7 @@ class SavedItemsController < ApplicationController
   before_action :set_saved_item, only: [:open, :destroy, :update_state, :archive, :unarchive]
 
   def create
-    url = params.dig(:saved_item, :url).to_s.strip
+    url = saved_item_params[:url].to_s.strip
 
     if url.blank?
       redirect_to inbox_path, alert: "URL is required."
@@ -103,11 +103,11 @@ class SavedItemsController < ApplicationController
   # Explicit user intent: move item OUT of Archived into an explicit non-archived state.
   #
   # Contract:
-  # - Caller must provide an explicit target state via params[:state]
+  # - Caller must provide an explicit target state via params[:saved_item][:state]
   # - Allowed targets: unread, viewed, read
   # - We do NOT infer a "restore previous state" rule here.
   def unarchive
-    target_state = params[:state].to_s
+    target_state = saved_item_state_params[:state].to_s
 
     allowed_targets = %w[unread viewed read]
     unless allowed_targets.include?(target_state)
@@ -128,11 +128,12 @@ class SavedItemsController < ApplicationController
     end
   end
 
-
-
   private
 
   def set_saved_item
+    # Defensive: global auth should ensure Current.user exists, but never allow a nil-scope fallback.
+    raise ActiveRecord::RecordNotFound if Current.user.nil?
+
     @saved_item = Current.user.saved_items.find(params[:id])
   end
 
