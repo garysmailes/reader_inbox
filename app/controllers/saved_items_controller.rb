@@ -59,10 +59,24 @@ class SavedItemsController < ApplicationController
     redirect_to inbox_path, alert: "Could not open that URL."
   end
 
-
   def destroy
     @saved_item.destroy
     redirect_to inbox_path, notice: "Removed."
+  end
+
+  def update_state
+    requested_state = saved_item_state_params[:state].to_s
+
+    if requested_state.blank?
+      redirect_back fallback_location: inbox_path, alert: "State is required."
+      return
+    end
+
+    if @saved_item.update(state: requested_state)
+      redirect_back fallback_location: inbox_path, notice: "Updated."
+    else
+      redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
+    end
   end
 
   private
