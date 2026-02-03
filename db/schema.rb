@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_03_183505) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_03_185149) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_183505) do
     t.string "domain"
     t.string "fetched_title"
     t.datetime "last_viewed_at"
+    t.string "metadata_status", default: "pending", null: false
     t.string "state", default: "unread", null: false
     t.datetime "updated_at", null: false
     t.string "url", null: false
@@ -27,6 +28,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_183505) do
     t.index ["user_id", "created_at"], name: "index_saved_items_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["user_id", "url"], name: "index_saved_items_on_user_id_and_url", unique: true
     t.index ["user_id"], name: "index_saved_items_on_user_id"
+    t.check_constraint "metadata_status::text = ANY (ARRAY['pending'::character varying, 'succeeded'::character varying, 'failed'::character varying]::text[])", name: "saved_items_metadata_status_allowed"
     t.check_constraint "state::text = ANY (ARRAY['unread'::character varying, 'viewed'::character varying, 'read'::character varying, 'archived'::character varying]::text[])", name: "saved_items_state_allowed"
   end
 

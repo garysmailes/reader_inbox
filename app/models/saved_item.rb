@@ -1,6 +1,7 @@
 class SavedItem < ApplicationRecord
   belongs_to :user
 
+  METADATA_STATUSES = %w[pending succeeded failed].freeze
   ALLOWED_STATES = %w[unread viewed read archived].freeze
 
   enum :state,
@@ -20,6 +21,7 @@ class SavedItem < ApplicationRecord
   validates :url, presence: true
   validates :user, presence: true
   validates :url, uniqueness: { scope: :user_id }
+  validates :metadata_status, inclusion: { in: METADATA_STATUSES }
 
   # Scopes
   scope :for_user, ->(user) { where(user: user) }
@@ -85,6 +87,17 @@ class SavedItem < ApplicationRecord
     clean
   end
 
+def metadata_pending?
+  metadata_status == "pending"
+end
+
+def metadata_succeeded?
+  metadata_status == "succeeded"
+end
+
+def metadata_failed?
+  metadata_status == "failed"
+end
 
 
   # Backfill helper for reused records (no validations; non-blocking).

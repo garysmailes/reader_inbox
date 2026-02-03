@@ -18,21 +18,30 @@ class SavedItemMetadataFetcher
 
   def call
     uri = parse_uri(@saved_item.url)
-    return false unless uri
+    unless uri
+      mark_failed_if_no_metadata!
+      return false
+    end
 
     # Domain can be derived without any network call.
     domain = uri.host&.downcase
     update_domain(domain) if domain.present?
 
     html = fetch_html(uri)
-    return true if html.blank? # Domain may still have been set.
+    if html.blank?
+      # Domain may still have been set; resolve status accordingly.
+      resolve_metadata_status!
+      return true
+    end
 
     title = extract_title(html)
     update_title(title) if title.present?
 
+    resolve_metadata_status!
     true
   rescue StandardError
     # Best-effort means: never break upstream flows.
+    mark_failed_if_no_metadata!
     false
   end
 
@@ -91,12 +100,39 @@ class SavedItemMetadataFetcher
     # Don't overwrite if already set; this is opportunistic.
     return if @saved_item.domain.present?
 
-    @saved_item.update(domain: domain)
+    # Use update_columns: this is background best-effort enrichment.
+    @saved_item.update_columns(domain: domain, updated_at: Time.current)
   end
 
   def update_title(title)
     return if @saved_item.fetched_title.present?
 
-    @saved_item.update(fetched_title: title)
+    @saved_item.update_columns(fetched_title: title, updated_at: Time.current)
+  end
+
+  # Resolve metadata_status after we have attempted enrichment.
+  # Rules:
+  # - succeeded if title OR domain is present (either was pre-existing or we set it)
+  # - failed only if BOTH are absent
+  def resolve_metadata_status!
+    return if @saved_item.metadata_status == "succeeded"
+
+    if @saved_item.fetched_title.present? || @saved_item.domain.present?
+      @saved_item.update_columns(metadata_status: "succeeded", updated_at: Time.current)
+    else
+      @saved_item.update_columns(metadata_status: "failed", updated_at: Time.current)
+    end
+  rescue StandardError
+    nil
+  end
+
+  # Only mark failed if nothing useful exists; never downgrade succeeded.
+  def mark_failed_if_no_metadata!
+    return if @saved_item.metadata_status == "succeeded"
+    return if @saved_item.fetched_title.present? || @saved_item.domain.present?
+
+    @saved_item.update_columns(metadata_status: "failed", updated_at: Time.current)
+  rescue StandardError
+    nil
   end
 end

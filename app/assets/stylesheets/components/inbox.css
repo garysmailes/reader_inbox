@@ -272,3 +272,8 @@
   border-color: var(--gray-3);
   color: var(--gray-7);
 }
+
+.inbox__item_meta_unavailable {
+  font-size: var(--font-size-0);
+  color: var(--gray-6);
+}

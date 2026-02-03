@@ -15,6 +15,10 @@
       <div class="inbox__notice"><%= flash[:notice] %></div>
     <% end %>
 
+    <% if item.metadata_failed? %>
+      <div class="inbox__item_meta_unavailable">Metadata not available</div>
+    <% end %>
+
     <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
       <%= form.url_field :url,
         required: true,

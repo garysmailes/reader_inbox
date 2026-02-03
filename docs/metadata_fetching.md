@@ -150,3 +150,10 @@ this document must be updated first.
 Metadata supports reading.  
 It does not define it.
 
+
+### Metadata status (persisted)
+
+Saved Items persist `metadata_status` to support failure transparency without guessing:
+- `pending` — metadata fetch has not completed yet (no failure indicator shown)
+- `succeeded` — at least one metadata field is available (title and/or domain)
+- `failed` — metadata could not be obtained (UI should show “metadata not available” and fall back to clean URL)
