@@ -7,9 +7,9 @@
   --ri-font-body: var(--font-transitional);
   --ri-font-ui: var(--font-system-ui);
 
-  /* Softer paper-like background */
-  --ri-bg: var(--gray-1);
-  --ri-surface: var(--gray-0);
+  /* Instapaper-like: pure white page */
+  --ri-bg: white;
+  --ri-surface: white;
 
   --ri-text: var(--gray-9);
   --ri-muted: var(--gray-7);
@@ -19,7 +19,9 @@
   --ri-link-hover: var(--indigo-8);
 
   --ri-radius: var(--radius-2);
-  --ri-shadow: var(--shadow-1); /* subtle by default */
+
+  /* Keep available, but we’ll rarely use shadows in this theme */
+  --ri-shadow: none;
 }
 
 :where(body) {

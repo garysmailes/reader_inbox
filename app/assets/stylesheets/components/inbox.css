@@ -4,24 +4,30 @@
 
 .inbox {
   min-block-size: 100dvh;
-  display: grid;
-  place-items: start center;
-  padding: var(--size-5);
+  display: block;
+
+  /* edge-to-edge on mobile */
+  padding: 0;
 }
 
 .inbox__card {
   inline-size: 100%;
-  max-inline-size: var(--size-xs);
+  max-inline-size: none;
+
   display: grid;
   gap: var(--size-4);
 
-  padding: var(--size-6);
-  background: var(--ri-surface);
+  /* internal page padding (like Instapaper) */
+  padding: var(--size-5);
 
-  border: var(--border-size-1) solid var(--ri-border);
-  border-radius: var(--ri-radius);
-  box-shadow: var(--shadow-1);
+  background: transparent;
+
+  /* remove card framing on mobile */
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
+
 
 .inbox__title {
   margin: 0;
@@ -240,13 +246,6 @@
 .inbox__item_action:focus {
   outline: none;
   box-shadow: 0 0 0 var(--border-size-2) var(--indigo-2);
-}
-
-.inbox__header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--size-3);
 }
 
 .inbox__nav_link {

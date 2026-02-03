@@ -1,11 +1,5 @@
 <div class="inbox">
   <div class="inbox__card">
-    <div class="inbox__header">
-      <h1 class="inbox__title">Reading Inbox</h1>
-      <a class="inbox__nav_link" href="<%= archive_path %>">Archive</a>
-    </div>
-
-    <p class="inbox__hint">Paste a link now. Read it later.</p>
 
     <% if flash[:alert].present? %>
       <div class="inbox__alert"><%= flash[:alert] %></div>
@@ -13,10 +7,6 @@
 
     <% if flash[:notice].present? %>
       <div class="inbox__notice"><%= flash[:notice] %></div>
-    <% end %>
-
-    <% if item.metadata_failed? %>
-      <div class="inbox__item_meta_unavailable">Metadata not available</div>
     <% end %>
 
     <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
@@ -47,11 +37,6 @@
                 <%= item.state.capitalize %>
               </span>
 
-              <% if item.domain.present? %>
-                <span class="inbox__item_domain"><%= item.domain %></span>
-              <% end %>
-
-
               <% if metadata_unavailable?(item) %>
                 <span class="inbox__item_note">Metadata was not available</span>
               <% end %>
@@ -73,7 +58,6 @@
                   form_class: "inbox__item_action_form",
                   title: "Archive keeps the item but removes it from your inbox" %>
               </div>
-
             </div>
           </li>
         <% end %>
