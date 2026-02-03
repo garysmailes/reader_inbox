@@ -57,7 +57,7 @@ If metadata fetching fails:
 
 - the Saved Item is still created
 - the URL remains the primary identifier
-- the UI displays a clean version of the URL
+- the UI displays a clean version of the URL (persisted on the Saved Item as a fallback display value)
 - the UI indicates that metadata was not available
 
 Failure must be:

@@ -92,8 +92,11 @@ Each Saved Item represents **one unique article URL saved by a user**.
 - State  
 - Created at  
 - Last viewed at (if applicable)  
+- Clean URL (persisted display fallback; derived from URL for use when metadata is unavailable)
 
 Metadata fetching is opportunistic and **must never block saving**.
+
+
 
 ---
 

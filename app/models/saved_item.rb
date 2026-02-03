@@ -14,6 +14,7 @@ class SavedItem < ApplicationRecord
 
   before_validation :set_default_state, on: :create
   before_validation :derive_domain_from_url, if: -> { domain.blank? && url.present? }
+  before_validation :derive_clean_url_from_url, if: -> { clean_url.blank? && url.present? }
 
   validates :state, presence: true, inclusion: { in: ALLOWED_STATES }
   validates :url, presence: true
@@ -59,6 +60,32 @@ class SavedItem < ApplicationRecord
     # Non-blocking by design.
     nil
   end
+
+  # Best-effort clean URL derivation from url.
+  # - Local string manipulation only (no network).
+  # - Never raises; never blocks saving.
+  # - Purpose: persisted fallback display value when metadata is unavailable.
+  def derive_clean_url_from_url
+    self.clean_url = self.class.extract_clean_url(url)
+  rescue StandardError
+    nil
+  end
+
+  def self.extract_clean_url(raw_url)
+    return nil if raw_url.blank?
+
+    raw = raw_url.to_s.strip
+    return nil if raw.blank?
+
+    clean = raw
+              .sub(/\Ahttps?:\/\//, "")
+              .sub(/\Awww\./, "")
+
+    clean = raw if clean.blank?
+    clean
+  end
+
+
 
   # Backfill helper for reused records (no validations; non-blocking).
   def ensure_domain!

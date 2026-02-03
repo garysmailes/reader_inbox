@@ -1,10 +1,11 @@
 module SavedItemsHelper
   def clean_url_for(saved_item)
-    saved_item.url
-      .to_s
-      .strip
-      .sub(/\Ahttps?:\/\//, "")
-      .sub(/\Awww\./, "")
+    saved_item.clean_url.presence ||
+      saved_item.url
+        .to_s
+        .strip
+        .sub(/\Ahttps?:\/\//, "")
+        .sub(/\Awww\./, "")
   end
 
   def metadata_unavailable?(saved_item)
