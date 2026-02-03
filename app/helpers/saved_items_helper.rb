@@ -9,7 +9,7 @@ module SavedItemsHelper
   end
 
   def metadata_unavailable?(saved_item)
-    saved_item.fetched_title.blank?
+    saved_item.fetched_title.blank? && saved_item.domain.blank?
   end
 
   def saved_item_state_label(saved_item)
