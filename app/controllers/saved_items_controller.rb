@@ -6,7 +6,7 @@ class SavedItemsController < ApplicationController
     url = saved_item_params[:url].to_s.strip
 
     if url.blank?
-      redirect_to inbox_path, alert: "URL is required."
+      redirect_to inbox_path, alert: "URL is required.", status: :see_other
       return
     end
 
@@ -17,7 +17,7 @@ class SavedItemsController < ApplicationController
 
       flash[:saved_item_status] = "already_saved"
       flash[:saved_item_id] = existing.id
-      redirect_to inbox_path, notice: "Already saved."
+      redirect_to inbox_path, notice: "Already saved.", status: :see_other
       return
     end
 
@@ -34,7 +34,7 @@ class SavedItemsController < ApplicationController
         nil
       end
 
-      redirect_to inbox_path, notice: "Saved."
+      redirect_to inbox_path, notice: "Saved.", status: :see_other
     else
       redirect_to inbox_path, alert: @saved_item.errors.full_messages.to_sentence.presence || "Could not save URL."
     end
@@ -44,7 +44,7 @@ class SavedItemsController < ApplicationController
 
     flash[:saved_item_status] = "already_saved"
     flash[:saved_item_id] = existing.id
-    redirect_to inbox_path, notice: "Already saved."
+    redirect_to inbox_path, notice: "Already saved.", status: :see_other
   end
 
   # "First open" automation:
@@ -56,12 +56,12 @@ class SavedItemsController < ApplicationController
 
     redirect_to @saved_item.url, allow_other_host: true
   rescue ActionController::Redirecting::UnsafeRedirectError, URI::InvalidURIError
-    redirect_to inbox_path, alert: "Could not open that URL."
+    redirect_to inbox_path, alert: "Could not open that URL.", status: :see_other
   end
 
   def destroy
     @saved_item.destroy
-    redirect_to inbox_path, notice: "Removed."
+    redirect_to inbox_path, notice: "Removed.", status: :see_other
   end
 
   # Manual, reversible state updates.
