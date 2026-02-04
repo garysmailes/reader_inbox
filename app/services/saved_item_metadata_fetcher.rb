@@ -25,22 +25,20 @@ class SavedItemMetadataFetcher
 
     # Domain can be derived without any network call.
     domain = uri.host&.downcase
-    update_domain(domain) if domain.present?
+    set_domain(domain) if domain.present?
 
     html = fetch_html(uri)
     if html.blank?
-      # Domain may still have been set; resolve status accordingly.
       resolve_metadata_status!
       return true
     end
 
     title = extract_title(html)
-    update_title(title) if title.present?
+    set_title(title) if title.present?
 
     resolve_metadata_status!
     true
   rescue StandardError
-    # Best-effort means: never break upstream flows.
     mark_failed_if_no_metadata!
     false
   end
@@ -86,30 +84,27 @@ class SavedItemMetadataFetcher
   end
 
   def extract_title(html)
-    # Best-effort extraction without extra gems.
-    # Handles newlines and ignores case.
     match = html.match(/<title[^>]*>(.*?)<\/title>/im)
     return nil unless match
 
-    title = match[1].to_s
-    title = title.gsub(/\s+/, " ").strip
+    title = match[1].to_s.gsub(/\s+/, " ").strip
     title.presence
   end
 
-  def update_domain(domain)
-    # Don't overwrite if already set; this is opportunistic.
+  # IMPORTANT:
+  # Use `update` (not update_columns) so `after_update_commit` runs
+  # and Turbo broadcasts replace the list item automatically.
+  def set_domain(domain)
     return if @saved_item.domain.present?
 
-    # Use regular update so callbacks fire (Turbo streams can broadcast on update).
     @saved_item.update(domain: domain)
   rescue StandardError
     nil
   end
 
-  def update_title(title)
+  def set_title(title)
     return if @saved_item.fetched_title.present?
 
-    # Use regular update so callbacks fire (Turbo streams can broadcast on update).
     @saved_item.update(fetched_title: title)
   rescue StandardError
     nil
@@ -131,7 +126,6 @@ class SavedItemMetadataFetcher
     nil
   end
 
-  # Only mark failed if nothing useful exists; never downgrade succeeded.
   def mark_failed_if_no_metadata!
     return if @saved_item.metadata_status == "succeeded"
     return if @saved_item.fetched_title.present? || @saved_item.domain.present?
