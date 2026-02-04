@@ -1,15 +1,24 @@
 <div class="inbox">
   <div class="inbox__card">
 
-    <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
+    <%= form_with url: saved_items_path,
+      scope: :saved_item,
+      class: "inbox__form",
+      data: { controller: "clear-url-field" } do |form| %>
+
       <%= form.url_field :url,
         required: true,
         autofocus: true,
         placeholder: "https://example.com/article",
-        class: "inbox__input" %>
+        class: "inbox__input",
+        autocomplete: "off",
+        autocapitalize: "none",
+        spellcheck: false,
+        data: { "clear-url-field-target": "input" } %>
 
       <%= form.submit "Save", class: "inbox__button" %>
     <% end %>
+
 
     <% if @saved_items.present? %>
       <ul class="inbox__list" aria-label="Saved items">
