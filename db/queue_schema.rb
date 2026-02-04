@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_03_185149) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_04_092015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,8 +28,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_185149) do
     t.index ["user_id", "created_at"], name: "index_saved_items_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["user_id", "url"], name: "index_saved_items_on_user_id_and_url", unique: true
     t.index ["user_id"], name: "index_saved_items_on_user_id"
-    t.check_constraint "metadata_status::text = ANY (ARRAY['pending'::character varying, 'succeeded'::character varying, 'failed'::character varying]::text[])", name: "saved_items_metadata_status_allowed"
-    t.check_constraint "state::text = ANY (ARRAY['unread'::character varying, 'viewed'::character varying, 'read'::character varying, 'archived'::character varying]::text[])", name: "saved_items_state_allowed"
+    t.check_constraint "metadata_status::text = ANY (ARRAY['pending'::character varying::text, 'succeeded'::character varying::text, 'failed'::character varying::text])", name: "saved_items_metadata_status_allowed"
+    t.check_constraint "state::text = ANY (ARRAY['unread'::character varying::text, 'viewed'::character varying::text, 'read'::character varying::text, 'archived'::character varying::text])", name: "saved_items_state_allowed"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -39,6 +39,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_03_185149) do
     t.string "user_agent"
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "solid_cable_messages", force: :cascade do |t|
+    t.binary "channel", null: false
+    t.bigint "channel_hash", null: false
+    t.datetime "created_at", null: false
+    t.binary "payload", null: false
+    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
+    t.index ["channel_hash"], name: "index_solid_cable_messages_on_channel_hash"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
