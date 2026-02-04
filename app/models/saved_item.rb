@@ -23,6 +23,8 @@ class SavedItem < ApplicationRecord
   validates :url, uniqueness: { scope: :user_id }
   validates :metadata_status, inclusion: { in: METADATA_STATUSES }
 
+  after_update_commit :broadcast_refresh_inbox_item
+
   # Scopes
   scope :for_user, ->(user) { where(user: user) }
   scope :active_inbox, -> { where.not(state: "archived") }
@@ -148,4 +150,15 @@ end
   rescue StandardError
     nil
   end
+
+def broadcast_refresh_inbox_item
+  broadcast_replace_later_to(
+    [user, :saved_items],
+    target: ActionView::RecordIdentifier.dom_id(self),
+    partial: "saved_items/saved_item",
+    locals: { item: self }
+  )
+end
+
+
 end

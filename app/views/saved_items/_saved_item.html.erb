@@ -1,0 +1,42 @@
+<li id="<%= dom_id(item) %>" class="inbox__item">
+  <p class="inbox__item_title">
+    <a class="inbox__item_link"
+       href="<%= open_saved_item_path(item) %>"
+       target="_blank"
+       rel="noopener noreferrer">
+      <%= item.fetched_title.presence || clean_url_for(item) %>
+    </a>
+  </p>
+
+  <div class="inbox__item_meta">
+    <span class="inbox__item_state inbox__item_state--<%= item.state %>">
+      <%= item.state.capitalize %>
+    </span>
+
+    <% if item.domain.present? %>
+      <span class="inbox__item_domain"><%= item.domain %></span>
+    <% end %>
+
+    <% if metadata_unavailable?(item) %>
+      <span class="inbox__item_note">Metadata was not available</span>
+    <% end %>
+
+    <div class="inbox__item_actions">
+      <% unless item.read? %>
+        <%= button_to "Set read",
+          state_saved_item_path(item),
+          method: :patch,
+          params: { saved_item: { state: "read" } },
+          class: "inbox__item_action",
+          form_class: "inbox__item_action_form" %>
+      <% end %>
+
+      <%= button_to "Archive",
+        archive_saved_item_path(item),
+        method: :patch,
+        class: "inbox__item_action inbox__item_action--subtle",
+        form_class: "inbox__item_action_form",
+        title: "Archive keeps the item but removes it from your inbox" %>
+    </div>
+  </div>
+</li>

@@ -100,14 +100,19 @@ class SavedItemMetadataFetcher
     # Don't overwrite if already set; this is opportunistic.
     return if @saved_item.domain.present?
 
-    # Use update_columns: this is background best-effort enrichment.
-    @saved_item.update_columns(domain: domain, updated_at: Time.current)
+    # Use regular update so callbacks fire (Turbo streams can broadcast on update).
+    @saved_item.update(domain: domain)
+  rescue StandardError
+    nil
   end
 
   def update_title(title)
     return if @saved_item.fetched_title.present?
 
-    @saved_item.update_columns(fetched_title: title, updated_at: Time.current)
+    # Use regular update so callbacks fire (Turbo streams can broadcast on update).
+    @saved_item.update(fetched_title: title)
+  rescue StandardError
+    nil
   end
 
   # Resolve metadata_status after we have attempted enrichment.
@@ -118,9 +123,9 @@ class SavedItemMetadataFetcher
     return if @saved_item.metadata_status == "succeeded"
 
     if @saved_item.fetched_title.present? || @saved_item.domain.present?
-      @saved_item.update_columns(metadata_status: "succeeded", updated_at: Time.current)
+      @saved_item.update(metadata_status: "succeeded")
     else
-      @saved_item.update_columns(metadata_status: "failed", updated_at: Time.current)
+      @saved_item.update(metadata_status: "failed")
     end
   rescue StandardError
     nil
@@ -131,7 +136,7 @@ class SavedItemMetadataFetcher
     return if @saved_item.metadata_status == "succeeded"
     return if @saved_item.fetched_title.present? || @saved_item.domain.present?
 
-    @saved_item.update_columns(metadata_status: "failed", updated_at: Time.current)
+    @saved_item.update(metadata_status: "failed")
   rescue StandardError
     nil
   end
