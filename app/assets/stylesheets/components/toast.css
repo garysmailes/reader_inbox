@@ -1,0 +1,97 @@
+/* Toast — dark card, icon + title + message, close button */
+
+.ri-toast-stack {
+  position: fixed;
+  inset-block-start: calc(var(--size-6) + 3.25rem); /* below navbar */
+  inset-inline-end: var(--size-6);
+  z-index: 1000;
+}
+
+.ri-toast {
+  inline-size: min(22rem, calc(100vw - var(--size-6) * 2));
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--size-3);
+  align-items: start;
+
+  padding: var(--size-4);
+  border-radius: var(--radius-3);
+
+  background: var(--gray-10);
+  color: var(--gray-0);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-3);
+
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.ri-toast__icon {
+  inline-size: var(--size-5);
+  block-size: var(--size-5);
+  margin-block-start: 0.1rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ri-toast__icon svg {
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+  fill: currentColor;
+}
+
+.ri-toast__title {
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-7);
+  line-height: var(--font-lineheight-1);
+  margin: 0;
+}
+
+.ri-toast__message {
+  margin-block-start: var(--size-1);
+  font-family: var(--ri-font-ui);
+  font-size: var(--font-size-0);
+  line-height: var(--font-lineheight-3);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ri-toast__close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  padding: var(--size-1);
+  margin: calc(var(--size-1) * -1);
+  border-radius: var(--radius-2);
+  cursor: pointer;
+}
+
+.ri-toast__close:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ri-toast__close svg {
+  inline-size: var(--size-4);
+  block-size: var(--size-4);
+  display: block;
+  fill: currentColor;
+}
+
+/* Subtle semantic accents */
+.ri-toast--notice .ri-toast__icon {
+  color: var(--green-4);
+}
+
+.ri-toast--alert .ri-toast__icon {
+  color: var(--orange-4);
+}
+
+.ri-toast--hide {
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  pointer-events: none;
+}

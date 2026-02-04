@@ -1,14 +1,6 @@
 <div class="inbox">
   <div class="inbox__card">
 
-    <% if flash[:alert].present? %>
-      <div class="inbox__alert"><%= flash[:alert] %></div>
-    <% end %>
-
-    <% if flash[:notice].present? %>
-      <div class="inbox__notice"><%= flash[:notice] %></div>
-    <% end %>
-
     <%= form_with url: saved_items_path, scope: :saved_item, class: "inbox__form" do |form| %>
       <%= form.url_field :url,
         required: true,
@@ -65,5 +57,6 @@
     <% else %>
       <p class="inbox__empty">No saved items yet.</p>
     <% end %>
+
   </div>
 </div>
