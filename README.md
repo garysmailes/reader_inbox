@@ -21,6 +21,12 @@ The documentation in [`/docs`](docs/) defines the product. The code exists to im
 
 The product is defined by a small set of canonical documents. These act as the **single source of truth** for scope, behaviour, and constraints.
 
+### AI implementation prompt
+
+- **AI Prompt (canonical)**  \
+  [`AI Prompt`](docs/outline/ai_prompt.md)  \
+  The authoritative prompt used to guide ChatGPT when acting as a Rails technical lead for this project. This file encodes execution constraints, product doctrine, architectural guardrails, and documentation discipline.
+
 ### Core product definition
 
 - **Product Outline**  
