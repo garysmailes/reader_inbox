@@ -24,35 +24,35 @@ The product is defined by a small set of canonical documents. These act as the *
 ### Core product definition
 
 * **Product Outline**  
-  `/docs/product_outline.md`  
+  [`/docs/product_outline.md`](docs/product_outline.md)  
   Defines what the app does and does not do, MVP boundaries, and user‑visible behaviour.
 
 * **Domain Language**  
-  `/docs/domain_language.md`  
+  [`/docs/domain_language.md`](docs/domain_language.md)  
   Canonical nouns and terminology used across code, UI, and documentation.
 
 * **State Model**  
-  `/docs/state_model.md`  
+  [`/docs/state_model.md`](docs/state_model.md)  
   Explicit reading states and allowed transitions. Clarifies what is manual, automatic, or never inferred.
 
 ### Behavioural constraints
 
 * **UI Principles**  
-  `/docs/ui_principles.md`  
+  [`/docs/ui_principles.md`](docs/ui_principles.md)  
   Mobile‑first interaction rules and UX guardrails.
 
 * **URL Handling**  
-  `/docs/url_handling.md`  
+  [`/docs/url_handling.md`](docs/url_handling.md)  
   Rules for capture, deduplication, and canonicalisation.
 
 * **Metadata Fetching**  
-  `/docs/metadata_fetching.md`  
+  [`/docs/metadata_fetching.md`](docs/metadata_fetching.md)  
   Best‑effort metadata behaviour and failure handling.
 
 ### Roadmap (non‑binding)
 
 * **Roadmap**  
-  `/docs/roadmap.md`  
+  [`/docs/roadmap.md`](docs/roadmap.md)  
   Explicitly out‑of‑scope ideas parked for later consideration. Nothing in this document should affect MVP behaviour.
 
 ---
@@ -78,7 +78,7 @@ Reading Inbox is intentionally simple and conservative in its architecture.
 Architectural intent, trade‑offs, and constraints are recorded in:
 
 * **Architecture Decisions**  
-  `/docs/architecture_decisions.md`
+  [`/docs/architecture_decisions.md`](docs/architecture_decisions.md)
 
 This document should be updated whenever a significant architectural choice is made.
 
