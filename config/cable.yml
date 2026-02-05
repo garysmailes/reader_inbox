@@ -1,22 +1,21 @@
-# Async adapter only works within the same process, so for manually triggering cable updates from a console,
-# and seeing results in the browser, you must do so from the web console (running inside the dev process),
-# not a terminal started via bin/rails console! Add "console" to any action or any ERB template view
-# to make the web console appear.
+# Solid Cable stores messages in the database (solid_cable_messages).
+# In production we use a single database via DATABASE_URL.
+# In development you can either use the primary DB or a dedicated "cable" DB.
+# This version uses the primary DB everywhere for simplicity + consistency.
+
 development:
   adapter: solid_cable
-  connects_to:
-    database:
-      writing: cable
+  url: <%= ENV["DATABASE_URL"] %>
   polling_interval: 0.1.seconds
   message_retention: 1.day
+  channel_prefix: reader_inbox_development
 
 test:
   adapter: test
 
 production:
   adapter: solid_cable
-  connects_to:
-    database:
-      writing: cable
+  url: <%= ENV["DATABASE_URL"] %>
   polling_interval: 0.1.seconds
   message_retention: 1.day
+  channel_prefix: reader_inbox_production
