@@ -21,10 +21,21 @@
           </svg>
         </summary>
 
-
         <div class="ri-menu__panel" role="menu">
-          <%= link_to "Archive", archive_path, class: "ri-menu__item", role: "menuitem" %>
+          <%= link_to "Archive",
+                      archive_path,
+                      class: "ri-menu__item",
+                      role: "menuitem" %>
+
+          <% if Current.user %>
+            <%= link_to "Log out",
+                        session_path,
+                        class: "ri-menu__item",
+                        role: "menuitem",
+                        data: { turbo_method: :delete } %>
+          <% end %>
         </div>
+
       </details>
     </div>
   </nav>
