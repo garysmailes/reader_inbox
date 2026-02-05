@@ -13,9 +13,10 @@
 @import "foundations/reset.css";
 @import "foundations/open-props.css";
 @import "foundations/theme.css";
-@import "components/toast.css";
+
 
 /* Components */
 @import "components/auth.css";
 @import "components/inbox.css";
 @import "components/navbar.css";
+@import "components/toast.css";

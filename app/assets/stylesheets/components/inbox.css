@@ -100,11 +100,15 @@
 
 @media (min-width: 48rem) {
   .inbox {
-    place-items: center;
     padding: var(--size-7);
   }
 
   .inbox__card {
+    /* center the content column on larger viewports */
+    max-inline-size: 56.25rem; /* 900px */
+    margin-inline: auto;
+
+    /* keep the nicer breathing room on desktop */
     padding: var(--size-7);
   }
 }
