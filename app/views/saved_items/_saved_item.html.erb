@@ -13,10 +13,6 @@
       <%= item.state.capitalize %>
     </span>
 
-    <% if item.domain.present? %>
-      <span class="inbox__item_domain"><%= item.domain %></span>
-    <% end %>
-
     <% if metadata_unavailable?(item) %>
       <span class="inbox__item_note">Metadata was not available</span>
     <% end %>

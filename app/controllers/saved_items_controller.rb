@@ -28,7 +28,7 @@ class SavedItemsController < ApplicationController
       flash[:saved_item_id] = @saved_item.id
 
       begin
-        FetchSavedItemMetadataJob.perform_later(@saved_item.id)
+        FetchSavedItemMetadataJob.set(wait: 1.second).perform_later(@saved_item.id)
       rescue StandardError
         # Metadata fetching is opportunistic and must never block saving.
         nil
