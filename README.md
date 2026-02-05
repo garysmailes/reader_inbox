@@ -1,102 +1,106 @@
-# Reading Inbox — Documentation
+# Reading Inbox
 
-This folder contains the **canonical documentation** for *Reading Inbox*.
+## 1. What this app is
 
-Reading Inbox is a personal, mobile-first “read-it-later” system designed to:
-- capture long-form articles quickly via URL
-- return to them later in a calm, low-distraction inbox
-- track simple reading progression via explicit states
-- maintain a permanent personal archive
+**Reading Inbox** is a personal, mobile‑first *read‑it‑later* application.
 
-The documentation here defines:
-- what the product is and is not
-- the meaning of core domain concepts
-- strict boundaries between MVP and roadmap
-- architectural and behavioural guardrails
+Its purpose is deliberately narrow:
 
-All product decisions and implementations must be traceable back to these documents.
+* Capture long‑form content quickly via a single URL
+* Provide a calm, low‑distraction inbox for returning to that content
+* Allow the reader to explicitly control reading progress via simple states
+* Preserve a permanent personal archive, without optimisation or gamification
 
----
+Reading Inbox is **not** a recommendation engine, a productivity tracker, or a social product. All behaviour is driven by explicit user intent rather than inferred engagement.
 
-## How to use these docs
-
-If you are:
-- **building features** → start with **[Product Outline](./docs/product_outline.md)**
-- **making UX decisions** → read **[UI Principles](./docs/ui_principles.md)**
-- **working with states or automation** → read **[State Model](./docs/state_model.md)**
-- **handling URLs or metadata** → read **[URL Handling](./docs/url_handling.md)** and **[Metadata Fetching](./docs/metadata_fetching.md)**
-- **adding future ideas** → check **[Roadmap](./docs/roadmap.md)** first
-
-If something is unclear or missing:
-- do not guess
-- update the docs first
-- then implement
-
-The docs define truth.  
-The code implements it.
+The documentation in `/docs` defines the product. The code exists to implement those decisions.
 
 ---
 
-## Canonical documents
+## 2. Product outline and scope
 
-### Product definition
+The product is defined by a small set of canonical documents. These act as the *single source of truth* for scope, behaviour, and constraints.
 
-- **[Product Outline](./docs/product_outline.md)**  
-  The single source of truth for product scope, behaviour, and boundaries.  
-  All features and implementations must be traceable to this document.
+### Core product definition
 
-- **[Domain Language](./docs/domain_language.md)**  
-  Defines canonical nouns and terms (e.g. “Saved Item”, “Inbox”, “Viewed”).  
-  Prevents naming drift across code, UI, and documentation.
+* **Product Outline**  
+  `/docs/product_outline.md`  
+  Defines what the app does and does not do, MVP boundaries, and user‑visible behaviour.
 
-- **[State Model](./docs/state_model.md)**  
-  Defines the explicit reading lifecycle and allowed state transitions.  
-  Clarifies what is automatic vs manual and what is never inferred.
+* **Domain Language**  
+  `/docs/domain_language.md`  
+  Canonical nouns and terminology used across code, UI, and documentation.
 
----
+* **State Model**  
+  `/docs/state_model.md`  
+  Explicit reading states and allowed transitions. Clarifies what is manual, automatic, or never inferred.
 
-### Behavioural guardrails
+### Behavioural constraints
 
-- **[URL Handling](./docs/url_handling.md)**  
-  Rules for URL ingestion, deduplication, and canonicalisation boundaries.
+* **UI Principles**  
+  `/docs/ui_principles.md`  
+  Mobile‑first interaction rules and UX guardrails.
 
-- **[Metadata Fetching](./docs/metadata_fetching.md)**  
-  Defines best-effort metadata behaviour and failure handling.  
-  Protects capture speed and user intent.
+* **URL Handling**  
+  `/docs/url_handling.md`  
+  Rules for capture, deduplication, and canonicalisation.
 
-- **[UI Principles](./docs/ui_principles.md)**  
-  Mobile-first UX principles and interaction priorities.  
-  Guards against clutter, gamification, and distraction.
+* **Metadata Fetching**  
+  `/docs/metadata_fetching.md`  
+  Best‑effort metadata behaviour and failure handling.
 
-- **[Architecture Decisions](./docs/architecture_decisions.md)**  
-  Records architectural intent and constraints (Rails-way, Hotwire discipline, background jobs).
+### Roadmap (non‑binding)
 
----
-
-### Future-facing (non-binding)
-
-- **[Roadmap](./docs/roadmap.md)**  
-  Explicitly out-of-scope ideas parked for later consideration.  
-  Items here must not leak into MVP behaviour.
+* **Roadmap**  
+  `/docs/roadmap.md`  
+  Explicitly out‑of‑scope ideas parked for later consideration. Nothing in this document should affect MVP behaviour.
 
 ---
 
-## Canonical rules
+## 3. Architecture overview
 
-- The **[Product Outline](./docs/product_outline.md)** is authoritative.
-- MVP behaviour must never be inferred from roadmap sections.
-- AI and automation are always subordinate to explicit user intent.
-- If behaviour changes, the docs must be updated before or alongside code.
+Reading Inbox is intentionally simple and conservative in its architecture.
+
+### Core principles
+
+* Rails‑conventional monolith
+* Server‑rendered HTML with Hotwire for interactivity
+* Minimal background processing
+* No behavioural inference or analytics‑driven automation
+
+### Key architectural decisions
+
+* **Ruby on Rails** as the application framework
+* **Hotwire (Turbo + Stimulus)** for progressive enhancement
+* **PostgreSQL** as the primary data store
+* **Background jobs** used only where they protect capture speed (e.g. metadata fetching)
+
+Architectural intent, trade‑offs, and constraints are recorded in:
+
+* **Architecture Decisions**  
+  `/docs/architecture_decisions.md`
+
+This document should be updated whenever a significant architectural choice is made.
 
 ---
 
-## Status
+## 4. How to work with this repo
 
-This documentation set is a **living system**.
+* Treat the documentation as authoritative
+* Do not invent behaviour that is not supported by the docs
+* Update documentation *before or alongside* any behavioural change
+* MVP behaviour must never be inferred from roadmap items
 
-It is expected to evolve as:
-- new features are added
-- constraints are clarified
-- roadmap items are promoted into MVP
+If something is unclear:
 
-Changes should be deliberate, explicit, and traceable.
+1. Check the relevant document in `/docs`
+2. If still unclear, update or extend the documentation
+3. Only then implement
+
+---
+
+## 5. Status
+
+Reading Inbox is a living system.
+
+The documentation is expected to evolve as constraints are clarified and features are deliberately added. All changes should be explicit, traceable, and aligned with the core goal: **a calm, intentional reading inbox**.
