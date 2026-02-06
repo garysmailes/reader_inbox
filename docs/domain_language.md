@@ -174,21 +174,23 @@ Explicit user action indicating completion.
 
 ### Archive
 
-**Meaning:**  
-Move a Saved Item out of the Inbox.
+**Archive** preserves a Saved Item while removing it from the active Inbox.
 
-- Archiving is reversible.
-- Archiving does not delete.
+Archived items remain part of the user’s personal archive and can be unarchived or deleted at any time. Archiving is non-destructive and reversible; deletion is not.
 
 ---
 
 ### Delete
 
-**Meaning:**  
-Permanently remove a Saved Item.
+**Delete** is a terminal action that permanently removes a Saved Item from the system.
 
-- Deletion is a hard delete.
-- There is no trash or recovery state.
+Deleting a Saved Item:
+- immediately and irreversibly removes it from the user’s Reading Inbox
+- removes it from all states (Unread, Viewed, Read, Archived)
+- does not provide any recovery, undo, or restore mechanism
+
+Delete is not a state and does not participate in the Saved Item lifecycle.
+
 
 ---
 

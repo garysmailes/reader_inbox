@@ -188,6 +188,15 @@ Deletion is **orthogonal to state**.
 - Deletion bypasses all state transitions.
 - There is no “Deleted” state.
 
+### Deletion and the State Model
+
+Deletion is not a Saved Item state.
+
+When a Saved Item is deleted, it exits the state model entirely and is removed from the system. Deleted items do not transition through states and cannot be referenced or restored.
+
+The state model applies only to existing Saved Items.
+
+
 ---
 
 ## Canonical rules

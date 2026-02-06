@@ -316,13 +316,21 @@ All sharing must be:
 
 ---
 
-## 13. Deletion & Retention
+### Deletion & Retention
 
-- Deletion is **hard delete**  
-- Deleted items are permanently removed  
-- No trash or recovery semantics  
+Saved Items persist in the system until the user explicitly deletes them.
 
-The archive is permanent **only until the user deletes an item**.
+**Delete** is a permanent, irreversible action that removes a Saved Item entirely from the user’s Reading Inbox and history. Once deleted, the item no longer exists in the system and cannot be recovered.
+
+Deletion is not part of the reading lifecycle and is distinct from Archiving.
+
+**Archive** preserves a Saved Item for long-term retention while removing it from the active Inbox. Archived items remain available until explicitly deleted by the user.
+
+The system does not provide:
+- a trash or recycle bin
+- undo or restore functionality
+- automated or time-based deletion
+
 
 ---
 
