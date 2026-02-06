@@ -28,7 +28,6 @@
   box-shadow: none;
 }
 
-
 .inbox__title {
   margin: 0;
   font-size: var(--font-size-6);
@@ -52,10 +51,9 @@
   min-inline-size: 0;
 }
 
-
 .inbox__input {
   inline-size: 100%;
-  min-inline-size: 0; /* critical for long URLs inside grid/flex contexts */
+  min-inline-size: 0;
   padding: var(--size-3);
 
   border-radius: var(--ri-radius);
@@ -109,11 +107,8 @@
   }
 
   .inbox__card {
-    /* center the content column on larger viewports */
-    max-inline-size: 56.25rem; /* 900px */
+    max-inline-size: 56.25rem;
     margin-inline: auto;
-
-    /* keep the nicer breathing room on desktop */
     padding: var(--size-7);
   }
 }
@@ -190,13 +185,12 @@
   color: var(--ri-muted);
 }
 
-
 .inbox__item_state {
   display: inline-flex;
   align-items: center;
 
   padding: 0 var(--size-2);
-  min-block-size: var(--size-5);
+  min-block-size: var(--size-4); /* match action buttons */
 
   border-radius: var(--radius-round);
   border: var(--border-size-1) solid var(--gray-3);
@@ -209,7 +203,7 @@
   line-height: var(--font-lineheight-1);
 }
 
-/* Subtle, calm variants (no “dashboard” vibe) */
+
 .inbox__item_state--unread {
   background: var(--gray-1);
   border-color: var(--gray-3);
@@ -232,9 +226,15 @@
   margin: 0;
 }
 
+/* ✅ FIX: make links and buttons render identically */
 .inbox__item_action {
   padding: 0 var(--size-2);
-  min-block-size: var(--size-6);
+  min-block-size: var(--size-4);
+
+  margin-block-start: var(--size-2);
+
+  display: inline-flex;
+  align-items: center;
 
   border-radius: var(--radius-round);
   border: var(--border-size-1) solid var(--gray-4);
@@ -246,6 +246,13 @@
   line-height: var(--font-lineheight-1);
 
   cursor: pointer;
+  text-decoration: none;
+}
+
+.inbox__item_action:link,
+.inbox__item_action:visited {
+  text-decoration: none;
+  color: inherit;
 }
 
 .inbox__item_action:hover {
@@ -275,7 +282,6 @@
   gap: var(--size-2);
 }
 
-/* Slightly quieter button for secondary actions like Archive */
 .inbox__item_action--subtle {
   border-color: var(--gray-3);
   color: var(--gray-7);

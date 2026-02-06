@@ -12,17 +12,7 @@ They are required for the product to be considered *done*, not “nice to have�
 
 ---
 
-### 1. Explicit Delete (Hard Delete)
 
-Provide a clear, user-initiated way to permanently delete a Saved Item.
-
-Deletion must:
-
-* remove the item entirely (no trash, no recovery)
-* be clearly distinct from Archiving
-* require explicit user intent (no automation)
-
-This enforces the product’s retention philosophy and keeps the archive meaningful.
 
 ---
 

@@ -195,3 +195,18 @@ This feature optimises the homepage for fast, low-friction URL capture on mobile
 - ✅ Persist clean URL display value for cases where metadata is unavailable  
 - ✅ Render saved item using fetched title and domain when available  
 - ✅ Render clean URL and “metadata not available” indicator when metadata fetch fails  
+
+
+---
+
+## Feature 12: Explicit Delete (Hard Delete)
+**Status:** Active ✅  
+
+This feature allows a user to permanently delete a single Saved Item they own. Deletion is **irreversible**, is **not a state**, and is conceptually distinct from Archiving. Deleted items are removed entirely from persistence and cannot be recovered.
+
+### Completed tasks
+- ✅ Enforce ownership and authorization for Saved Item deletion (scoped to current user)
+- ✅ Implement terminal hard delete for a single Saved Item (record removed from persistence)
+- ✅ Add explicit user confirmation surface before deletion can execute (server-side gated)
+- ✅ Expose a clear, distinct “Delete” action in both Inbox and Archive item interfaces (routes to confirmation)
+- ✅ Handle deletion failure and edge cases with minimal, non-leaky user feedback (calm redirect + single message)
