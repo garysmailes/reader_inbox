@@ -152,7 +152,13 @@
 .inbox__item_link {
   color: var(--ri-text);
   text-decoration: none;
+
+  /* Ensure the link behaves like a block of text and wraps cleanly */
+  display: block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
+
 
 .inbox__item_link:hover {
   text-decoration: underline;
