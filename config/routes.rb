@@ -16,16 +16,18 @@ Rails.application.routes.draw do
   get  "/sign-up", to: "registrations#new",    as: :sign_up
   post "/sign-up", to: "registrations#create"
 
-  # Saved Items (URL capture)
-  resources :saved_items, only: %i[create destroy] do
-    member do
-      get :open
-      patch :state, to: "saved_items#update_state"
-      patch :archive, to: "saved_items#archive"
-      patch :unarchive, to: "saved_items#unarchive"
-      patch :read, to: "saved_items#mark_read"
-    end
+# Saved Items (URL capture)
+resources :saved_items, only: %i[create destroy] do
+  member do
+    get :open
+    get :confirm_delete
+    patch :state, to: "saved_items#update_state"
+    patch :archive, to: "saved_items#archive"
+    patch :unarchive, to: "saved_items#unarchive"
+    patch :read, to: "saved_items#mark_read"
   end
+end
+
 
 
 end

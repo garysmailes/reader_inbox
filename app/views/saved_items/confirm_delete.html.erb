@@ -1,0 +1,12 @@
+<h1>Delete saved item</h1>
+
+<p>This will permanently delete this saved item. This cannot be undone.</p>
+
+<div class="actions">
+  <%= link_to "Cancel", inbox_path %>
+
+  <%= button_to "Delete",
+        saved_item_path(@saved_item),
+        method: :delete,
+        form: { data: { turbo_confirm: nil } } %>
+</div>

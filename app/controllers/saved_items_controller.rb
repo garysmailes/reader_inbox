@@ -60,9 +60,17 @@ class SavedItemsController < ApplicationController
   end
 
   def destroy
+    unless deletion_confirmed_for?(@saved_item)
+      redirect_to confirm_delete_saved_item_path(@saved_item), status: :see_other
+      return
+    end
+
+    clear_deletion_confirmation!
+
     @saved_item.destroy
     redirect_to inbox_path, notice: "Removed.", status: :see_other
   end
+
 
   # Manual, reversible state updates.
   # - User-initiated only (never called by automation).
@@ -128,6 +136,11 @@ class SavedItemsController < ApplicationController
     end
   end
 
+  def confirm_delete
+    session[:confirmed_delete_saved_item_id] = @saved_item.id
+  end
+
+
   private
 
   def set_saved_item
@@ -145,4 +158,13 @@ class SavedItemsController < ApplicationController
   def saved_item_state_params
     params.require(:saved_item).permit(:state)
   end
+
+  def deletion_confirmed_for?(saved_item)
+    session[:confirmed_delete_saved_item_id].to_i == saved_item.id
+  end
+
+  def clear_deletion_confirmation!
+    session.delete(:confirmed_delete_saved_item_id)
+  end
+
 end
