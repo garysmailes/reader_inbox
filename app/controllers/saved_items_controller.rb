@@ -1,6 +1,11 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: %i[open confirm_delete destroy update_state archive unarchive mark_read]
+  before_action :set_saved_item, only: %i[
+    open confirm_delete destroy update_state archive unarchive mark_read
+  ]
+
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_missing_saved_item
+
 
   def create
     url = saved_item_params[:url].to_s.strip
@@ -71,7 +76,6 @@ class SavedItemsController < ApplicationController
     redirect_to inbox_path, notice: "Removed.", status: :see_other
   end
 
-
   # Manual, reversible state updates.
   # - User-initiated only (never called by automation).
   # - Scoped to Current.user via set_saved_item.
@@ -123,15 +127,6 @@ class SavedItemsController < ApplicationController
       return
     end
 
-    def mark_read
-  if @saved_item.update(state: "read")
-    redirect_back fallback_location: inbox_path, notice: "Updated."
-  else
-    redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
-  end
-end
-
-
     # Keep behavior strict and predictable: only unarchive items that are currently archived.
     unless @saved_item.state == "archived"
       redirect_back fallback_location: inbox_path, alert: "Item is not archived."
@@ -145,10 +140,17 @@ end
     end
   end
 
+  def mark_read
+    if @saved_item.update(state: "read")
+      redirect_back fallback_location: inbox_path, notice: "Updated."
+    else
+      redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
+    end
+  end
+
   def confirm_delete
     session[:confirmed_delete_saved_item_id] = @saved_item.id
   end
-
 
   private
 
@@ -174,6 +176,20 @@ end
 
   def clear_deletion_confirmation!
     session.delete(:confirmed_delete_saved_item_id)
+  end
+
+  def handle_missing_saved_item
+  clear_deletion_confirmation!
+
+  # Minimal, non-leaky feedback for any "missing" case:
+  # - invalid id
+  # - already deleted
+  # - not owned by this user (scoped find)
+  redirect_to inbox_path, alert: delete_failure_message, status: :see_other
+  end
+
+  def delete_failure_message
+    "Could not delete that item."
   end
 
 end

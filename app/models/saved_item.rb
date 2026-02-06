@@ -163,11 +163,12 @@ def broadcast_refresh_inbox_item
 end
 
 def broadcast_remove_inbox_item
-  broadcast_remove_later_to(
+  broadcast_remove_to(
     [user, :saved_items],
     target: ActionView::RecordIdentifier.dom_id(self)
   )
 end
+
 
 
 
