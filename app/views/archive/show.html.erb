@@ -43,7 +43,13 @@
                 class: "inbox__item_action",
                 form_class: "inbox__item_action_form",
                 title: "Moves the item back into your inbox (it is not deleted)" %>
+
+              <%= link_to "Delete",
+                confirm_delete_saved_item_path(item),
+                class: "inbox__item_action inbox__item_action--subtle",
+                title: "Delete permanently removes the item" %>
             </div>
+
 
 
             </div>

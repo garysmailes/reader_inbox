@@ -1,6 +1,6 @@
 class SavedItemsController < ApplicationController
   # Global auth is already enforced at ApplicationController
-  before_action :set_saved_item, only: [:open, :destroy, :update_state, :archive, :unarchive]
+  before_action :set_saved_item, only: %i[open confirm_delete destroy update_state archive unarchive mark_read]
 
   def create
     url = saved_item_params[:url].to_s.strip
@@ -122,6 +122,15 @@ class SavedItemsController < ApplicationController
       redirect_back fallback_location: inbox_path, alert: "Invalid unarchive state."
       return
     end
+
+    def mark_read
+  if @saved_item.update(state: "read")
+    redirect_back fallback_location: inbox_path, notice: "Updated."
+  else
+    redirect_back fallback_location: inbox_path, alert: @saved_item.errors.full_messages.to_sentence
+  end
+end
+
 
     # Keep behavior strict and predictable: only unarchive items that are currently archived.
     unless @saved_item.state == "archived"
