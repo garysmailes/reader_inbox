@@ -47,10 +47,15 @@
 .inbox__form {
   display: grid;
   gap: var(--size-3);
+
+  /* Allow long, unbreakable input values (URLs) to shrink inside the grid on mobile */
+  min-inline-size: 0;
 }
+
 
 .inbox__input {
   inline-size: 100%;
+  min-inline-size: 0; /* critical for long URLs inside grid/flex contexts */
   padding: var(--size-3);
 
   border-radius: var(--ri-radius);
