@@ -24,6 +24,8 @@ class SavedItem < ApplicationRecord
   validates :metadata_status, inclusion: { in: METADATA_STATUSES }
 
   after_update_commit :broadcast_refresh_inbox_item
+  after_destroy_commit :broadcast_remove_inbox_item
+
 
   # Scopes
   scope :for_user, ->(user) { where(user: user) }
@@ -159,6 +161,14 @@ def broadcast_refresh_inbox_item
     locals: { item: self }
   )
 end
+
+def broadcast_remove_inbox_item
+  broadcast_remove_later_to(
+    [user, :saved_items],
+    target: ActionView::RecordIdentifier.dom_id(self)
+  )
+end
+
 
 
 end
